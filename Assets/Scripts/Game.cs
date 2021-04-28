@@ -32,6 +32,7 @@ public class Game : MonoBehaviour
     private Impfbar[] impfbare;
     ///zeigt auf erstes freies Feld vom Array normalos
     private int zeigerImpfbare;
+    private System.Random random = new System.Random();
     private void Awake()
     {
         // there can be only one...
