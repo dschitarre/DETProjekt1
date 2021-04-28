@@ -14,6 +14,7 @@ public class Labyrinth : ScriptableObject
     private int pathLengthRelativeToSize;
     private GameObject labyrinthWallPrefab;
     private LabyrinthGraph labyrinth;
+    private System.Random rand = new System.Random();
     private Cell[][] cells;
     public Vector2 startPos {get; private set;}
 
@@ -101,7 +102,6 @@ public class Labyrinth : ScriptableObject
         // remove Walls randomly until all cells are connected
         List<Wall> wallsTGenerate = new List<Wall>();
         List<Wall> removedWalls = new List<Wall>();
-        System.Random rand = new System.Random();
         while (walls.Count != 0) {
             int randomIndex = rand.Next(walls.Count);
             Wall randomWall = walls[randomIndex];
@@ -159,7 +159,7 @@ public class Labyrinth : ScriptableObject
             // consider each destination cell as exit
             foreach (KeyValuePair<string, int> destination in destinations) {
                 int xDest, yDest;
-                Cell.GetPosFromTag(destination.Key, out xDest, out yDest);
+                GetIntsFromTag(destination.Key, out xDest, out yDest);
                 // check if the current destination cell is outer cell
                 if (xDest == 0 || xDest == size-1 || yDest == 0 || yDest == size-1) {
                     int currentDeviation = Math.Abs(destination.Value-wantedPathLength);
@@ -184,10 +184,10 @@ public class Labyrinth : ScriptableObject
         Cell cellEntrance = bestCellPair.Item1;
         Cell cellExit = bestCellPair.Item2;
 
-        exitPos = cellExit.GetCenterPosition(cellSize);
+        Vector2 startPos, exitPos;
+        GetPosFromCell(cellExit.GetPosX(), cellExit.GetPosY(), out exitPos);
 
         // add outer walls and save entrance and exit
-        List<Wall> entranceAndExit = new List<Wall>();
         foreach (Cell cell in outerCells) {
             List<Wall> wallsToAdd = new List<Wall>();
             if (cell.GetPosX() == 0) {
@@ -203,7 +203,6 @@ public class Labyrinth : ScriptableObject
                 wallsToAdd.Add(new Wall(cell, new Cell(cell.GetPosX(), size)));
             }
             if (cell.Equals(cellExit)) {
-                entranceAndExit.Add(wallsToAdd[0]);
                 wallsToAdd.RemoveAt(0);
             }
             foreach (Wall wall in wallsToAdd) {
@@ -217,7 +216,7 @@ public class Labyrinth : ScriptableObject
             GenerateRectangle(posAndSize.x, posAndSize.y, posAndSize.z, posAndSize.w);
         }
 
-        startPos = cellEntrance.GetCenterPosition(cellSize);
+        GetPosFromCell(cellEntrance.GetPosX(), cellEntrance.GetPosY(), out startPos);
         GameObject.FindWithTag("Player").transform.position = startPos;
         GameObject.FindWithTag("MainCamera").transform.position = (Vector3) startPos + new Vector3(0.0f, 0.0f, -1.0f);
     }
@@ -233,8 +232,6 @@ public class Labyrinth : ScriptableObject
         distance[tagFrom] = 0;
 
         visiting.Add(tagFrom);
-
-        System.Random rand = new System.Random();
 
         while(visiting.Count != 0) {
             string currentTag = visiting.First();
@@ -260,34 +257,114 @@ public class Labyrinth : ScriptableObject
         return distance.ToList();
     }
 
-    public Vector2 GetPosOfCell(int x, int y) {
-        return cells[x][y].GetCenterPosition(cellSize);
+    public bool GetRandomPosInCell(int x, int y, out Vector2 pos) {
+        if (!IsCellInLabyrinth(x, y)) {
+            pos = new Vector2(0, 0);
+            return false;
+        }
+        pos = GetRandomPosInArea((float) (x + 0.5) * cellSize, (float) (y + 0.5) * cellSize, cellSize - 2 * wallThickness, cellSize - 2 * wallThickness);
+        return true;
     }
 
     // calculates the next cell on the way from one cell to another (in a labyrinth there is only one way from one cell to another)
-    public Vector2 nextPosToMoveToOnWayFromTo(Vector2 from, Vector2 to) {
-        from /= cellSize;
-        to /= cellSize;
-
-        string tagFrom = cells[(int) from.x][(int) from.y].GetTag();
-        string tagTo = cells[(int) to.x][(int) to.y].GetTag();
-        string tagNext;
-
-        if (tagFrom == tagTo) {
-            tagNext = tagFrom;
+    public bool nextPosToMoveToOnWayFromTo(Vector2 from, Vector2 to, out Vector2 nextPos) {
+        if (!GetCellFromPos(from, out int fromX, out int fromY) || !GetCellFromPos(to, out int toX, out int toY)) {
+            nextPos = new Vector2(0, 0);
+            Debug.Log("start and/or destination cell is/are not in the labyrinth");
+            return false;
         } else {
-            tagNext = labyrinth.nextVertexOnWayFromTo(tagFrom, tagTo);
-        }
+            string tagFrom = cells[fromX][fromY].GetTag();
+            string tagTo = cells[toX][toY].GetTag();
+            string tagNext;
 
-        int x, y;
-        Cell.GetPosFromTag(tagNext, out x, out y);
-        
-        return GetRandomPosInArea((float) (x + 0.5) * cellSize, (float) (y + 0.5) * cellSize, cellSize - 2 * wallThickness, cellSize - 2 * wallThickness);
+            if (tagFrom == tagTo) {
+                tagNext = tagFrom;
+            } else if (labyrinth.nextVertexOnWayFromTo(tagFrom, tagTo, out tagNext)) {
+                int x, y;
+                GetIntsFromTag(tagNext, out x, out y);
+                
+                GetRandomPosInCell(x, y, out nextPos);
+                return true;
+            }
+
+            nextPos = new Vector2(0, 0);
+            Debug.Log("no next cell found");
+            return false;
+        }
     }
 
     public Vector2 GetRandomPosInArea(float x, float y, float w, float h) {
-        System.Random rand = new System.Random();
         return new Vector2(x - w/2 + (float) rand.NextDouble() * w, y - h/2 + (float) rand.NextDouble() * h);
+    }
+
+    public bool IsCellInLabyrinth(int x, int y) {
+        if (x < 0 || y < 0 || x >= size || y >= size) {
+            Debug.Log("position outside of labyrinth");
+            return false;
+        }
+        return true;
+    }
+
+    public bool GetTagFromCell(int x, int y, out string tag) {
+        if (!IsCellInLabyrinth(x, y)) {
+            tag = "";
+            return false;
+        }
+        tag = cells[x][y].GetTag();
+        return true;
+    }
+
+    public bool GetIntsFromTag(string tag, out int x, out int y) {
+        string[] indices;
+        try {
+            indices = tag.Split(',');
+        } catch (Exception) {
+            x = 0;
+            y = 0;
+            return false;
+        }
+        x = Convert.ToInt32(indices[0]);
+        y = Convert.ToInt32(indices[1]);
+        return true;
+    }
+
+    public bool GetPosFromCell(int x, int y, out Vector2 pos) {
+        if (!IsCellInLabyrinth(x, y)) {
+            pos = new Vector2(0, 0);
+            return false;
+        }
+        pos = new Vector2(x + 0.5f, y + 0.5f) * cellSize;
+        return true;
+    }
+
+    public bool GetCellFromPos(Vector2 pos, out int x, out int y) {
+        x = (int) pos.x / cellSize;
+        y = (int) pos.y / cellSize;
+        if (!IsCellInLabyrinth(x, y)) {
+            
+            return false;
+        }
+        return true;
+    }
+
+    public bool GetTagFromPos(Vector2 pos, out string tag) {
+        int x, y;
+        if (!GetCellFromPos(pos, out x, out y)) {
+            tag = "";
+            return false;
+        }
+        if (!GetTagFromCell(x, y, out tag)) {
+            return false;
+        }
+        return true;
+    }
+
+    public bool GetRandomCellAtMaxDistance(string tagFrom, int maxDistance, out string tagRandom) {
+        if (!labyrinth.GetRandomCellAtMaxDistance(tagFrom, maxDistance, out tagRandom)) {
+            tagRandom = "";
+            return false;
+        }
+        return true;
     }
 
     private class Cell
@@ -309,29 +386,15 @@ public class Labyrinth : ScriptableObject
         }
 
         public String GetTag() {
-            return GetPosX().ToString() + "," + GetPosY().ToString();
+            return ToString();
         }
 
         public bool Equals(Cell cell) {
             return GetPosX() == cell.GetPosX() && GetPosY() == cell.GetPosY();
         }
 
-        public static void GetPosFromTag(string tag, out int x, out int y) {
-            string[] indices = tag.Split(',');
-            x = Convert.ToInt32(indices[0]);
-            y = Convert.ToInt32(indices[1]);
-        }
-
-        public static string GetTagFromPos(int x, int y) {
-            return x.ToString() + "," + y.ToString();
-        }
-
-        public Vector2 GetCenterPosition(int cellSize) {
-            return new Vector2(GetPosX() + 0.5f, GetPosY() + 0.5f) * cellSize;
-        }
-
         public override string ToString() {
-            return '[' + GetPosX().ToString() + ',' +  GetPosY().ToString() + ']';
+            return GetPosX().ToString() + ',' +  GetPosY().ToString();
         }
     }
 
@@ -461,7 +524,7 @@ public class Labyrinth : ScriptableObject
             return false;
         }
 
-        public string nextVertexOnWayFromTo(string tagFrom, string tagTo) {
+        public bool nextVertexOnWayFromTo(string tagFrom, string tagTo, out string tagNext) {
             Vertex from, to;
 
             TryGetBoth(tagFrom, tagTo, out from, out to);
@@ -469,20 +532,53 @@ public class Labyrinth : ScriptableObject
 
             foreach (Vertex candidate in candidates) {
                 if (candidate.GetTag() == tagTo) {
-                    return tagTo;
+                    tagNext = tagTo;
+                    return true;
                 }
                 Disconnect(from, candidate);
                 if (ExistsWayFromTo(candidate, to)) {
                     int x, y;
-                    Cell.GetPosFromTag(candidate.GetTag(), out x, out y);
+                    Instance.GetIntsFromTag(candidate.GetTag(), out x, out y);
                     Connect(from, candidate);
-                    return Cell.GetTagFromPos(x, y);
+                    Instance.GetTagFromCell(x, y, out tagNext);
+                    return true;
                 }
                 Connect(from, candidate);
             }
 
-            Debug.Log("no next Cell found");
-            return "0,0";
+            tagNext = "";
+            return false;
+        }
+
+        public bool GetRandomCellAtMaxDistance(string tagFrom, int maxDistance, out string tagRandom) {
+            Vertex from;
+
+            if (!vertices.TryGetValue(tagFrom, out from)) {
+                tagRandom = "";
+                return false;
+            }
+
+            tagRandom = GetRandomVertexAtMaxDistance(from, maxDistance).GetTag();
+            return true;
+        }
+
+        private Vertex GetRandomVertexAtMaxDistance(Vertex from, int maxDistance) {
+            if (maxDistance == 0) {
+                return from;
+            }
+
+            List<Vertex> adjacentVertices = GetAdjacentVertices(from);
+
+            if (adjacentVertices.Count == 0) {
+                return from;
+            }
+
+            Vertex next = adjacentVertices[Instance.rand.Next(adjacentVertices.Count)];
+            Disconnect(from, next);
+            Vertex dest = GetRandomVertexAtMaxDistance(next, maxDistance - 1);
+            Connect(from, next);
+            
+            return dest;
         }
 
         private bool TryGetBoth(string tagV, string tagU, out Vertex v, out Vertex u) {

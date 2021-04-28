@@ -188,6 +188,7 @@ public class Impfbar : LivingObject
          RandomMovement randomMovement=gameObject.GetComponent<RandomMovement>();
          script.speed=randomMovement.moveSpeed*1.2f;
     }
+
     public override bool immobile()
     {
         return politiker;

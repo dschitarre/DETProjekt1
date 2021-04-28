@@ -74,7 +74,7 @@ public class RandomMovement : MonoBehaviour
         Move();
     }
     void Move() {
-        rigidbody.velocity = new Vector2(moveDirection.x, moveDirection.y).normalized * moveSpeed;
+        //rigidbody.velocity = new Vector2(moveDirection.x, moveDirection.y).normalized * moveSpeed;
     }
     public void ruhigStellen(int dauer)
     {

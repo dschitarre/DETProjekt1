@@ -36,9 +36,22 @@ public class PlayerMovement : LivingObject
 
         if (Input.GetKeyDown("space")) {
             Vector2 playerPos = gameObject.transform.position;
-            Vector2 exitPos = Labyrinth.Instance.exitPos;
 
-            gameObject.transform.position = Labyrinth.Instance.nextPosToMoveToOnWayFromTo(playerPos, exitPos);
+            string tagPlayer;
+            Labyrinth.Instance.GetTagFromPos(playerPos, out tagPlayer);
+
+            string tagNext;
+            Labyrinth.Instance.GetRandomCellAtMaxDistance(tagPlayer, 4, out tagNext);
+
+            Debug.Log(tagNext);
+            
+            int x, y;
+            Labyrinth.Instance.GetIntsFromTag(tagNext, out x, out y);
+
+            Vector2 nextPos;
+            Labyrinth.Instance.GetPosFromCell(x, y, out nextPos);
+
+            gameObject.transform.position = nextPos;
         }
     }
 

@@ -5,11 +5,14 @@ using UnityEditor;
 
 public class Game : MonoBehaviour
 {
+    List<GameObject> normalos = new List<GameObject>();
+    List<GameObject> normalosInfected = new List<GameObject>();
     /// <summary>
     /// The singleton instance.
     /// </summary>
     public static Game Instance { get; private set; }
     private GameObject normaloPrefab;
+    private Labyrinth lab;
 
 
     /// <summary>
@@ -47,26 +50,81 @@ public class Game : MonoBehaviour
         
         // load settings
         Settings = GameSettings.Load();
-        impfbare=new Impfbar[Settings.getNumberOfImpfbare()];
-        zeigerImpfbare=0;
         
-        Labyrinth labyrinth = ScriptableObject.CreateInstance<Labyrinth>();
-        labyrinth.SetSettings(Settings);
-        labyrinth.Generate();
-
-        System.Random rand = new System.Random();
+        lab = ScriptableObject.CreateInstance<Labyrinth>();
+        lab.SetSettings(Settings);
+        lab.Generate();
 
         normaloPrefab = AssetDatabase.LoadAssetAtPath("Assets/Scenes/Normalo.prefab", typeof(GameObject)) as GameObject;
 
-        for (int i = 0; i<Settings.size; i++) {
-            for (int j = 0; j<Settings.size; j++) {
-                if (rand.NextDouble() <= Settings.personDensity) {
-                    GameObject normalo = Instantiate(normaloPrefab, labyrinth.GetPosOfCell(i, j), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-                    if (rand.NextDouble() <= Settings.probInfected) {
-                        normalo.GetComponent<Impfbar>().infiziert = true;
-                    }
-                }
+        int numberOfNormalos = (int) ((float) Settings.size * (float) Settings.size * Settings.personDensity);
+        int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
+
+
+
+        for (int i = 0; i < numberOfNormalos; i++) {
+            Vector2Int cell = new Vector2Int(random.Next(Settings.size), random.Next(Settings.size));
+
+            Vector2 pos;
+            lab.GetPosFromCell(cell.x, cell.y, out pos);
+            GameObject normalo = Instantiate(normaloPrefab, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+
+            normalos.Add(normalo);
+            StartCoroutine(normaloBehavior(normalo));
+        }
+
+        /*
+
+        for (int i = 0; i < numberOfInfected; i++) {
+            int randomIndex;
+            do {
+                randomIndex = random.Next(normalos.Count);
+            } while (normalos[randomIndex].GetComponent<Impfbar>().infiziert);
+
+            GameObject randomNormalo = normalos[randomIndex];
+            normalosInfected.Add(randomNormalo);
+            randomNormalo.GetComponent<Impfbar>().infiziert = true;
+        }
+
+        Debug.Log(normalos.Count + ", " + normalosInfected.Count);
+        */
+    }
+
+    private IEnumerator normaloBehavior(GameObject normalo) {
+        Vector2 posCurrent, posNext, posDest;
+        string tagCurrent, tagNext, tagDest;
+
+        // initialize current
+        posCurrent = normalo.transform.position;
+        lab.GetTagFromPos(posCurrent, out tagCurrent);
+
+        tagDest = tagCurrent;
+        tagNext = tagCurrent;
+        posDest = posCurrent;
+        posNext = posCurrent;
+
+        while (true) {
+            // update current position
+            posCurrent = normalo.transform.position;
+            lab.GetTagFromPos(posCurrent, out tagCurrent);
+            
+            // check if normalo is in destination cell
+            if (tagCurrent == tagDest) {
+                // set random destination cell
+                lab.GetRandomCellAtMaxDistance(tagCurrent, 4, out tagDest);
+                int x, y;
+                lab.GetIntsFromTag(tagDest, out x, out y);
+                lab.GetRandomPosInCell(x, y, out posDest);
             }
+
+            // set next cell on the way to destination cell
+            if (lab.nextPosToMoveToOnWayFromTo(posCurrent, posDest, out posNext)) {
+                lab.GetTagFromPos(posNext, out tagNext);
+            }
+
+            // move into target direction
+            normalo.GetComponent<Rigidbody2D>().velocity = (posNext - posCurrent).normalized * 3;
+            yield return new WaitForFixedUpdate();
         }
         waeponPrefabs=new GameObject[6];
         waeponPrefabs[0]=AssetDatabase.LoadAssetAtPath("Assets/Bullet.prefab", typeof(GameObject)) as GameObject;
@@ -106,10 +164,4 @@ public class Game : MonoBehaviour
             Debug.Log("unregistered Level instance", Instance);
         }
     }
-
-    public void addImpfbar(Impfbar impfbar)
-    {
-        impfbare[zeigerImpfbare]=impfbar;
-        zeigerImpfbare++;
-    } 
 }
