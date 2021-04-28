@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : LivingObject
 {
     public float moveSpeed;
     public Rigidbody2D rigidbody;
     public Camera cam;
     private Vector2 moveDirection;
     private Vector2 mousePos;
-    public int leben;
     // Update is called once per frame
     void Start(){
         leben=100;
+        infiziert=false;
     }
     void Update() {
         processInputs();
@@ -52,12 +52,12 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) { 
         if(Corona(other.gameObject))
         {
-            takeDemage(5);
+            FightRules.takeDemage(5,this);
         }
         if(Schlagstock(other.gameObject))
         {
             
-            if(!takeDemage(10))
+            if(!FightRules.takeDemage(10,this))
             {
                 Vector3 positionPlayer=transform.position;
                 Vector3 positionOther= other.gameObject.transform.position;
@@ -69,16 +69,7 @@ public class PlayerMovement : MonoBehaviour
     /*
     returns whether the player dies or not
     */
-    private bool takeDemage(int demage)
-    {
-        leben-=10;
-        if(leben<=0)
-        {
-            Destroy(gameObject);
-            return true;
-        }
-        return false;
-    }
+    
     void OnCollisionEnter2D(Collision2D collision) {
          
     }
@@ -103,5 +94,9 @@ public class PlayerMovement : MonoBehaviour
             return false;
         }
         return bullet.typ==2;
+    }
+    public override bool immobile()
+    {
+        return false;
     }
 }
