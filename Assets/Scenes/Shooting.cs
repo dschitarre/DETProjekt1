@@ -4,7 +4,6 @@ using UnityEngine;
 public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
-    public GameObject bulletPrefab;
     public float bulletForce = 20f;
     public int koBullets=100;
     void Update() {
@@ -13,34 +12,25 @@ public class Shooting : MonoBehaviour
         }
         if(Input.GetButtonDown("Fire2"))
         {
-            ShootTest();
-            //ShootBetaeubung();
+            //ShootTest();
+            ShootBetaeubung();
         }
     }
 
     void ShootImpfpfeil() {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+        FightRules.shoot(0,firePoint,bulletForce);
     }
 
     void ShootBetaeubung(){
         if(koBullets>0)
         {
             koBullets--;
-             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
-            bullet bulletScript=bullet.GetComponent<bullet>();
-            bulletScript.typ=2;
+            FightRules.shoot(1,firePoint,bulletForce);
         }
     }
     void Shoot(Vector2 force, Vector3 positionSpawn)
     {
-        //Debug.Log("Position: "+positionSpawn+" Force: "+force);
-         GameObject bullet = Instantiate(bulletPrefab, positionSpawn, firePoint.rotation);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(force * bulletForce, ForceMode2D.Impulse);
+        FightRules.shoot(0,positionSpawn,force,bulletForce,gameObject);
     }
     public void addKOBullets(int count)
     {

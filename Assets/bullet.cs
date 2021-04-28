@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    public int typ=0;//typ 0:Impfung, typ1:Betaeubung, typ2: Corona
+    public int typ=0;//typ 0:Impfung, typ1:Betaeubung, typ2: Corona, typ3: Mega-Schuss, typ4: BossAngriff, (typ5:Schlagstock)
      void Start()
     {
       

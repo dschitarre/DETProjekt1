@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Impfbar : MonoBehaviour
+public class Impfbar : LivingObject
 {
     public Renderer renderer;
-
-    public static GameObject SchlagstockPrefab;
-
-    public static GameObject virusPrefab;
-
-    public float virusForce = 10f;
 
     public Rigidbody2D rigidbody;
     public int distanceInfizierung=50;
@@ -20,12 +14,11 @@ public class Impfbar : MonoBehaviour
     public bool politiker=false;  
     public bool Impfgegner=false;
 
-    public bool infiziert=false;
     public bool wuetend=false;
 
     public int koBulletsFromPolitics=10;
 
-    public int timeBetweenHusten=5;
+    public static float timeBetweenHusten=1f;
 
     private int timeToNextHusten=0;
     
@@ -45,26 +38,7 @@ public class Impfbar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(virusPrefab==null)
-        {
-            virusPrefab = AssetDatabase.LoadAssetAtPath("Assets/Corona.prefab", typeof(GameObject)) as GameObject;
-            if(virusPrefab==null)
-            {
-                Debug.LogError("Virus Prefab nicht geladen");
-                Destroy(gameObject);
-                return;
-            }
-        }
-        if(SchlagstockPrefab==null)
-        {
-            SchlagstockPrefab = AssetDatabase.LoadAssetAtPath("Assets/Schlagstock.prefab", typeof(GameObject)) as GameObject;
-            if(SchlagstockPrefab==null)
-            {
-                Debug.LogError("Schlagstock Prefab nicht geladen");
-                Destroy(gameObject);
-                return;
-            }
-        }
+        leben=1;
         if(player==null)
         {
             var playerObject = GameObject.FindGameObjectWithTag("Player");
@@ -103,7 +77,8 @@ public class Impfbar : MonoBehaviour
         {
             politiker=true;
         }
-       setColor();
+        setColor();
+        StartCoroutine(FightRules.coHusten(this,rigidbody,timeBetweenHusten));
     }
     private void setColor()
     {
@@ -136,10 +111,7 @@ public class Impfbar : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(infiziert)
-        {
-            hustenOptional();
-        }
+        
     }
     void OnTriggerEnter2D(Collider2D other) { 
         if(other.CompareTag("Bullet")||other.CompareTag("WaffeGegner"))
@@ -170,12 +142,16 @@ public class Impfbar : MonoBehaviour
             {
                 ruhigStellen(100);   
             }
-            else
+            else if(bullet.typ==2)
             {
                 if(!infiziert)
                 {
                     infizieren();
                 }
+            }
+            else if(bullet.typ==3)
+            {
+                Destroy(gameObject);
             }
         }
 
@@ -184,28 +160,6 @@ public class Impfbar : MonoBehaviour
     {
         RandomMovement randomMovement=gameObject.GetComponent<RandomMovement>();
         randomMovement.ruhigStellen(dauer);
-    }
-
-    public void moeglicheInfektion(Impfbar infizierter)
-    {
-        if(!infiziert&&!geimpft&&inInfektionsDistanz(infizierter))
-        {
-            infizieren();
-        }
-    }
-    public bool inInfektionsDistanz(Impfbar infizierterAnderer)
-    {
-        Vector3 positionOther=infizierterAnderer.gameObject.transform.position;
-        Vector3 position=gameObject.transform.position;
-        Vector3 abstandsvector=positionOther-position;
-        int abstand=(int)abstandsvector.magnitude;
-        //Debug.Log(abstand);
-        if(abstand<=distanceInfizierung)
-        {
-            
-            return true;
-        }
-        return false;
     }
     public void infizieren()
     {
@@ -220,7 +174,7 @@ public class Impfbar : MonoBehaviour
     {
         Vector3 positionSpawn=gameObject.transform.position;
         positionSpawn.x-=0.6f;
-         GameObject schlagstock = Instantiate(SchlagstockPrefab,positionSpawn , gameObject.transform.rotation);
+         GameObject schlagstock = Instantiate(Game.waeponPrefabs[Game.SchlagstockNumber],positionSpawn , gameObject.transform.rotation);
         if(schlagstock==null)
         {
             Debug.Log("No schlagstock");
@@ -234,69 +188,9 @@ public class Impfbar : MonoBehaviour
          RandomMovement randomMovement=gameObject.GetComponent<RandomMovement>();
          script.speed=randomMovement.moveSpeed*1.2f;
     }
-    void hustenOptional()
+
+    public override bool immobile()
     {
-        if(timeToNextHusten>0)
-        {
-            timeToNextHusten--;
-        }
-        else
-        {
-            husten();
-            timeToNextHusten=timeBetweenHusten;
-        }
-    }
-    void husten()
-    {
-        if(virusPrefab==null)
-        {
-            Debug.Log("No Virus Prefab");
-        }
-        else
-        {
-            Vector3 personVelocity=new Vector3(rigidbody.velocity.x,rigidbody.velocity.y,0);
-           if(politiker)
-           {
-               personVelocity=new Vector3(1,1,0);
-           }
-            shootThreeVirusWithAngle(personVelocity);
-        }
-    }
-    private void shootVirus(Vector3 positionSpawn, Vector3 force3)
-    {
-        //Debug.Log("Position: "+positionSpawn+" Force: "+force3);
-        //Debug.Log("Position Normalo: "+gameObject.transform.position+" Normalo Velocity: "+rigidbody.velocity+" Position Virus: "+positionSpawn+" Force: "+force);
-        Vector2 force=new Vector2(force3.x,force3.y);
-        GameObject virus = Instantiate(virusPrefab, positionSpawn, gameObject.transform.rotation);
-        Rigidbody2D rb = virus.GetComponent<Rigidbody2D>();
-        rb.AddForce(force * virusForce, ForceMode2D.Impulse);
-    }
-    private void shootThreeVirusWithAngle(Vector3 personVelocity)
-    {
-        float distanceSpawnPoint=0.5f;
-        Vector3 a=personVelocity;//vector straight shoot
-        if(a.x==0)
-        {
-            a.x=0.01f;//otherwise dividing throw zero
-        }
-        float radian=(Mathf.PI/180)*30;//<90!
-        Vector3 b1=new Vector3(0,0,0);//vector angle° right
-        Vector3 b2=new Vector3(0,0,0);//vector angle° left
-        float p=((-2)*a.sqrMagnitude*Mathf.Cos(radian)*a.y)/(a.y*a.y+a.x*a.x);
-        float q=(a.sqrMagnitude*a.sqrMagnitude*Mathf.Cos(radian)*Mathf.Cos(radian)-a.sqrMagnitude*a.x*a.x)/(a.y*a.y+a.x*a.x);
-        b1.y=-(p/2)+Mathf.Sqrt(Mathf.Abs((p/2)*(p/2)-q));
-        b1.x=calculateB1(a,radian,b1.y);
-        b2.y=-(p/2)-Mathf.Sqrt(Mathf.Abs((p/2)*(p/2)-q));
-        b2.x=calculateB1(a,radian,b2.y);
-        Vector3 positionSpawn=gameObject.transform.position+personVelocity*distanceSpawnPoint;
-        shootVirus(positionSpawn,personVelocity);
-        positionSpawn=gameObject.transform.position+b1*distanceSpawnPoint;
-        shootVirus(positionSpawn,b1);
-        positionSpawn=gameObject.transform.position+b2*distanceSpawnPoint;
-        shootVirus(positionSpawn,b2);
-    }
-    private float calculateB1(Vector2 a, float radian, float b2)
-    {
-        return (a.sqrMagnitude*Mathf.Cos(radian)-a.y*b2)/a.x;
+        return politiker;
     }
 }

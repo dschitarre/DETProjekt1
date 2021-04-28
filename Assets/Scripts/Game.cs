@@ -22,7 +22,16 @@ public class Game : MonoBehaviour
 
     [Tooltip("Where to spawn the player.")]
     public Transform SpawnPoint;
-    private static System.Random random = new System.Random();
+
+    //the prefabs of all weapons
+
+    public static GameObject[] waeponPrefabs;
+
+    public static readonly int SchlagstockNumber=5;
+    ///allNormalos
+    private Impfbar[] impfbare;
+    ///zeigt auf erstes freies Feld vom Array normalos
+    private int zeigerImpfbare;
     private void Awake()
     {
         // there can be only one...
@@ -116,6 +125,25 @@ public class Game : MonoBehaviour
             // move into target direction
             normalo.GetComponent<Rigidbody2D>().velocity = (posNext - posCurrent).normalized * 3;
             yield return new WaitForFixedUpdate();
+        }
+        waeponPrefabs=new GameObject[6];
+        waeponPrefabs[0]=AssetDatabase.LoadAssetAtPath("Assets/Bullet.prefab", typeof(GameObject)) as GameObject;
+        waeponPrefabs[1]=waeponPrefabs[0];//KOBullets
+        waeponPrefabs[2]=AssetDatabase.LoadAssetAtPath("Assets/Corona.prefab", typeof(GameObject)) as GameObject;
+        waeponPrefabs[3]=waeponPrefabs[0];//megaBullet
+        waeponPrefabs[4]=waeponPrefabs[0];//bossBullet
+        waeponPrefabs[5]=AssetDatabase.LoadAssetAtPath("Assets/Schlagstock.prefab", typeof(GameObject)) as GameObject;
+        if(waeponPrefabs[0]==null)
+        {
+            Debug.LogError("Bullet not found");
+        }
+        if(waeponPrefabs[2]==null)
+        {
+            Debug.LogError("Covid not found");
+        }
+        if(waeponPrefabs[5]==null)
+        {
+            Debug.LogError("Schlagstock not found");
         }
     }
 
