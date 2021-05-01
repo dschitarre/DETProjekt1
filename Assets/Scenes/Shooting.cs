@@ -5,7 +5,11 @@ public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
     public float bulletForce = 20f;
-    public int koBullets=100;
+    public int specialBullets=100;
+
+    public int weapon2Number=1;
+
+
     void Update() {
         if (Input.GetButtonDown("Fire1")) {
             ShootImpfpfeil();
@@ -15,6 +19,10 @@ public class Shooting : MonoBehaviour
             //ShootTest();
             ShootBetaeubung();
         }
+        if(Input.GetButtonDown("Fire3"))
+        {
+            ShootMega();
+        }
     }
 
     void ShootImpfpfeil() {
@@ -22,11 +30,16 @@ public class Shooting : MonoBehaviour
     }
 
     void ShootBetaeubung(){
-        if(koBullets>0)
+        if(specialBullets>0)
         {
-            koBullets--;
+            specialBullets--;
             FightRules.shoot(1,firePoint,bulletForce);
         }
+    }
+
+    void ShootMega()
+    {
+        FightRules.shoot(3,firePoint,bulletForce);
     }
     void Shoot(Vector2 force, Vector3 positionSpawn)
     {
@@ -34,7 +47,7 @@ public class Shooting : MonoBehaviour
     }
     public void addKOBullets(int count)
     {
-        koBullets+=count;
+        specialBullets+=count;
     }
     private void ShootTest()
     {

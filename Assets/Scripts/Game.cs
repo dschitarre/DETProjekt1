@@ -92,7 +92,7 @@ public class Game : MonoBehaviour
         waeponPrefabs[0]=AssetDatabase.LoadAssetAtPath("Assets/Bullet.prefab", typeof(GameObject)) as GameObject;
         waeponPrefabs[1]=waeponPrefabs[0];//KOBullets
         waeponPrefabs[2]=AssetDatabase.LoadAssetAtPath("Assets/Corona.prefab", typeof(GameObject)) as GameObject;
-        waeponPrefabs[3]=waeponPrefabs[0];//megaBullet
+        waeponPrefabs[3]=AssetDatabase.LoadAssetAtPath("Assets/CanoneBall.prefab", typeof(GameObject)) as GameObject;
         waeponPrefabs[4]=waeponPrefabs[0];//bossBullet
         waeponPrefabs[5]=AssetDatabase.LoadAssetAtPath("Assets/Schlagstock.prefab", typeof(GameObject)) as GameObject;
         if(waeponPrefabs[0]==null)

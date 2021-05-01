@@ -24,4 +24,8 @@ public class Player : MonoBehaviour
     {
         shooting.addKOBullets(count);
     }
+    public float getMovementSpeed()
+    {
+        return movement.moveSpeed;
+    }
 }

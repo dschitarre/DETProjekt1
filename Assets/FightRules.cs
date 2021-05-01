@@ -54,7 +54,6 @@ public static class FightRules
                 if(livingObject.immobile()||personVelocity==new Vector3(0,0,0))
                 {
                     personVelocity=vectorToPlayer(livingObject.transform.position);
-                    Debug.Log("Vector to player: "+personVelocity);
                 }
             shootThreeVirusWithAngle(personVelocity,livingObject.gameObject);
             }
@@ -65,7 +64,6 @@ public static class FightRules
     {
         float distanceSpawnPoint=0.5f;
         Vector3 a=personVelocity;//vector straight shoot
-        Debug.Log(a);
         if(a.x==0)
         {
             a.x=0.01f;//otherwise dividing throw zero

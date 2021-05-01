@@ -125,17 +125,8 @@ public class Impfbar : LivingObject
             {
                 if(!geimpft)
                 {
-                    geimpft=true;
-                    infiziert=false;
-                    if(Impfgegner)
-                    {
-                        wuetend=true;
-                    }
-                    else if(politiker)
-                    {
-                        player.addKOBullets(koBulletsFromPolitics);
-                    }
-                    setColor();
+                    geimpftWerden();
+                    
                 }
             }
             else if(bullet.typ==1)
@@ -155,6 +146,27 @@ public class Impfbar : LivingObject
             }
         }
 
+    }
+    public void geimpftWerden()
+    {
+        geimpft=true;
+        infiziert=false;
+        if(Impfgegner)
+        {
+            wuetendWerden();
+        }
+        else if(politiker)
+        {
+            player.addKOBullets(koBulletsFromPolitics);
+        }
+        setColor();
+    }
+    public void wuetendWerden()
+    {
+        wuetend=true;
+        float playerSpeed=player.getMovementSpeed();
+        Movement movement=gameObject.GetComponent<Movement>();
+        movement.setMovementSpeed(movement);
     }
     public void ruhigStellen(float seconds)
     {

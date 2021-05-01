@@ -22,6 +22,10 @@ public class Movement : MonoBehaviour
         }
         meineImpfung=gameObject.GetComponent<Impfbar>();
     }
+    void setMovementSpeed(float newMovementSpeed)
+    {
+        moveSpeed=newMovementSpeed;
+    }
     /*
     void setMovementToPlayer()
     {
