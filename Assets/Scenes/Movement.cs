@@ -74,6 +74,7 @@ public class Movement : MonoBehaviour
     public void ruhigStellen(float seconds)
     {
         timeNoMovement=Math.Max(seconds,timeNoMovement);
+        rigidbody.velocity = new Vector2(0,0);
     }
 
     /*
