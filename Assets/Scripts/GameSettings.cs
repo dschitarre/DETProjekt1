@@ -14,10 +14,6 @@ public class GameSettings : ScriptableObject
     /// <returns></returns>
     public static GameSettings Load() => Resources.Load<GameSettings>("Settings");
 
-    [Header("Player")]
-    [Tooltip("The player's movement speed.")]
-    public float moveSpeed = 3.0f;
-
     [Header("Labyrinth")]
     [Tooltip("The labyrinth's side length")]
     public int size;

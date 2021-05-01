@@ -61,8 +61,6 @@ public class Game : MonoBehaviour
         int numberOfNormalos = (int) ((float) Settings.size * (float) Settings.size * Settings.personDensity);
         int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
 
-
-
         for (int i = 0; i < numberOfNormalos; i++) {
             Vector2Int cell = new Vector2Int(random.Next(Settings.size), random.Next(Settings.size));
 
@@ -115,6 +113,8 @@ public class Game : MonoBehaviour
         Vector2 posCurrent, posNext, posDest;
         string tagCurrent, tagNext, tagDest;
 
+        Movement movement = normalo.GetComponent<Movement>();
+
         // initialize current
         posCurrent = normalo.transform.position;
         lab.GetTagFromPos(posCurrent, out tagCurrent);
@@ -125,26 +125,36 @@ public class Game : MonoBehaviour
         posNext = posCurrent;
 
         while (true) {
-            // update current position
-            posCurrent = normalo.transform.position;
-            lab.GetTagFromPos(posCurrent, out tagCurrent);
-            
-            // check if normalo is in destination cell
-            if (tagCurrent == tagDest) {
-                // set random destination cell
-                lab.GetRandomCellAtMaxDistance(tagCurrent, 1 + random.Next(4), out tagDest);
-                int x, y;
-                lab.GetIntsFromTag(tagDest, out x, out y);
-                lab.GetRandomPosInCell(x, y, out posDest);
-            }
+            yield return new WaitForFixedUpdate();
+            if (!movement.immobile()) {
+                // update current position
+                posCurrent = normalo.transform.position;
+                lab.GetTagFromPos(posCurrent, out tagCurrent);
+                
+                if (movement.wuetend()) { // if normalo is wuetend set destination cell as player's cell
+                    tagDest = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().currentCell;
+                    posDest = GameObject.FindGameObjectWithTag("Player").transform.position;
+                } else if (tagCurrent == tagDest) { // check if normalo is in destination cell
+                    // set random destination cell
+                    lab.GetRandomCellAtMaxDistance(tagCurrent, 1 + random.Next(4), out tagDest);
+                    int x, y;
+                    lab.GetIntsFromTag(tagDest, out x, out y);
+                    lab.GetRandomPosInCell(x, y, out posDest);
+                }
 
-            // set next cell on the way to destination cell
-            if (lab.nextPosToMoveToOnWayFromTo(posCurrent, posDest, out posNext)) {
-                lab.GetTagFromPos(posNext, out tagNext);
-            }
+                if (movement.wuetend() && tagCurrent == tagDest) {
+                    tagNext = tagDest;
+                    posNext = posDest;
+                } else {
+                    // set next cell on the way to destination cell
+                    if (lab.nextPosToMoveToOnWayFromTo(posCurrent, posDest, out posNext)) {
+                        lab.GetTagFromPos(posNext, out tagNext);
+                    }
+                }
 
-            // move into target direction
-            normalo.GetComponent<Rigidbody2D>().velocity = (posNext - posCurrent).normalized * 3;
+                // move into target direction
+                normalo.GetComponent<Rigidbody2D>().velocity = (posNext - posCurrent).normalized * movement.moveSpeed;
+            }
             yield return new WaitForSeconds((float) (0.75f + 0.5 * random.NextDouble()));
         }
     }

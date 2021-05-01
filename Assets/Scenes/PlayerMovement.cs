@@ -8,6 +8,7 @@ public class PlayerMovement : LivingObject
     public Camera cam;
     private Vector2 moveDirection;
     private Vector2 mousePos;
+    public string currentCell = "0,0";
     // Update is called once per frame
     void Start(){
         leben=100;
@@ -33,29 +34,11 @@ public class PlayerMovement : LivingObject
         moveDirection = new Vector2(moveX, moveY);
 
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-
-        if (Input.GetKeyDown("space")) {
-            Vector2 playerPos = gameObject.transform.position;
-
-            string tagPlayer;
-            Labyrinth.Instance.GetTagFromPos(playerPos, out tagPlayer);
-
-            string tagNext;
-            Labyrinth.Instance.GetRandomCellAtMaxDistance(tagPlayer, 4, out tagNext);
-
-            Debug.Log(tagNext);
-            
-            int x, y;
-            Labyrinth.Instance.GetIntsFromTag(tagNext, out x, out y);
-
-            Vector2 nextPos;
-            Labyrinth.Instance.GetPosFromCell(x, y, out nextPos);
-
-            gameObject.transform.position = nextPos;
-        }
     }
 
     void Move() {
+        Labyrinth.Instance.GetTagFromPos(gameObject.transform.position, out currentCell);
+
         rigidbody.velocity = new Vector2(moveDirection.x, moveDirection.y).normalized * moveSpeed;
 
         Vector2 lookDir = mousePos - rigidbody.position;

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3594856947559247415}
   - component: {fileID: 3594856947559247432}
   - component: {fileID: 8032435495861994261}
+  - component: {fileID: 2377734929388054991}
   m_Layer: 0
   m_Name: Normalo
   m_TagString: Impfbar
@@ -155,3 +156,17 @@ MonoBehaviour:
   Impfgegner: 0
   wuetend: 0
   koBulletsFromPolitics: 10
+--- !u!114 &2377734929388054991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594856947559247413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9508b57a932c5df41897de0c3ecf77e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  rigidbody: {fileID: 0}
