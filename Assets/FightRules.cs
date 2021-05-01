@@ -28,7 +28,7 @@ public static class FightRules
     }  
     public static void shoot(int bulletTyp, Vector3 position, Vector3 force, float bulletForce, GameObject gameObject)
     {
-        Debug.Log("Position: "+position+" , Force "+force);
+        //Debug.Log("Position: "+position+" , Force "+force);
         GameObject bullet = MonoBehaviour.Instantiate(Game.waeponPrefabs[bulletTyp], position, gameObject.transform.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(force * bulletForce, ForceMode2D.Impulse);

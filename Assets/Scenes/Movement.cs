@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class RandomMovement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public float moveSpeed;
     public Rigidbody2D rigidbody;
-    private Vector2 moveDirection;
-
-    private int timeToNextMovementChange;
-    
-    private int timeNoMovement;
     Impfbar meineImpfung;
     static Transform playerTransformation;
+
+    float timeNoMovement;
+
     void Start()
     {
-        timeToNextMovementChange=0;
         timeNoMovement=0;
-        var player = GameObject.FindGameObjectWithTag("Player");
-        playerTransformation=player.transform;
+        if(playerTransformation!=null)
+        {
+             var player = GameObject.FindGameObjectWithTag("Player");
+            playerTransformation=player.transform;
+        }
         meineImpfung=gameObject.GetComponent<Impfbar>();
-        moveDirection=new Vector2(0,0);
     }
-    void setRandomMovement()
-    {
-        System.Random random=new System.Random();
-        moveDirection.x=(float)random.NextDouble()*2-1;
-        moveDirection.y=(float)random.NextDouble()*2-1;
-        timeToNextMovementChange=random.Next(60);
-    }
+    /*
     void setMovementToPlayer()
     {
         if(playerTransformation==null)
@@ -40,11 +33,9 @@ public class RandomMovement : MonoBehaviour
         Vector3 position=gameObject.transform.position;
         moveDirection.x=positionPlayer.x-position.x;
         moveDirection.y=positionPlayer.y-position.y;
-    }
-    void Update() {
-    }
+    }*/
 
-    void FixedUpdate() {
+    /*void FixedUpdate() {
         if(timeNoMovement>0)
         {
             timeNoMovement--;
@@ -72,13 +63,34 @@ public class RandomMovement : MonoBehaviour
             }
         }
         Move();
-    }
+    }*/
     void Move() {
         //rigidbody.velocity = new Vector2(moveDirection.x, moveDirection.y).normalized * moveSpeed;
     }
-    public void ruhigStellen(int dauer)
+    public void ruhigStellen(float seconds)
     {
-        moveDirection=new Vector2(0,0);
-        timeNoMovement=Math.Max(dauer,timeNoMovement);
+        timeNoMovement=Math.Max(seconds,timeNoMovement);
+    }
+
+    /*
+    returns true if von Impfungen wuetend 
+    */
+    public bool wuetend()
+    {
+        return meineImpfung.wuetend;
+    }
+
+    public bool immobile()
+    {
+        if(meineImpfung.immobile())
+        {
+            return true;
+        }
+        if(timeNoMovement>0)
+        {
+            timeNoMovement-=Time.deltaTime;
+            return true;
+        }
+        return false;
     }
 }

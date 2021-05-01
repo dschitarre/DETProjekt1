@@ -140,7 +140,7 @@ public class Impfbar : LivingObject
             }
             else if(bullet.typ==1)
             {
-                ruhigStellen(100);   
+                ruhigStellen(1f);   
             }
             else if(bullet.typ==2)
             {
@@ -156,10 +156,10 @@ public class Impfbar : LivingObject
         }
 
     }
-    public void ruhigStellen(int dauer)
+    public void ruhigStellen(float seconds)
     {
-        RandomMovement randomMovement=gameObject.GetComponent<RandomMovement>();
-        randomMovement.ruhigStellen(dauer);
+        Movement movement=gameObject.GetComponent<Movement>();
+        movement.ruhigStellen(seconds);
     }
     public void infizieren()
     {
@@ -185,8 +185,8 @@ public class Impfbar : LivingObject
              Debug.Log("No script");
          }
          script.userRigidbody=rigidbody;
-         RandomMovement randomMovement=gameObject.GetComponent<RandomMovement>();
-         script.speed=randomMovement.moveSpeed*1.2f;
+        Movement movement=gameObject.GetComponent<Movement>();
+         script.speed=movement.moveSpeed*1.2f;
     }
 
     public override bool immobile()
