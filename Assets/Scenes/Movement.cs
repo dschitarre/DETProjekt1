@@ -93,7 +93,7 @@ public class Movement : MonoBehaviour
         }
         if(timeNoMovement>0)
         {
-            timeNoMovement-=Time.deltaTime;
+            timeNoMovement=0;
             return true;
         }
         return false;

@@ -35,6 +35,9 @@ public class Impfbar : LivingObject
     private static Player player;
 
     private static System.Random  random;
+
+    private Schlagstock meinSchlagstock;//Schlagstock of Impfgegner or null
+
     // Start is called before the first frame update
     void Start()
     {
@@ -167,6 +170,7 @@ public class Impfbar : LivingObject
         float playerSpeed=player.getMovementSpeed();
         Movement movement=gameObject.GetComponent<Movement>();
         movement.setMovementSpeed(playerSpeed);
+        meinSchlagstock.speed=playerSpeed*1.2f;
     }
     public void ruhigStellen(float seconds)
     {
@@ -197,6 +201,7 @@ public class Impfbar : LivingObject
              Debug.Log("No script");
          }
          script.userRigidbody=rigidbody;
+         meinSchlagstock=script;
         Movement movement=gameObject.GetComponent<Movement>();
          script.speed=movement.moveSpeed*1.2f;
     }
