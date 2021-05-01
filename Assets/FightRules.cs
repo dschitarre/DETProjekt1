@@ -86,7 +86,7 @@ public static class FightRules
     }
     private static void shootVirus(Vector3 positionSpawn, Vector3 force3, GameObject gameObject)
     {
-        Vector2 force=new Vector2(force3.x,force3.y);
+        Vector2 force=new Vector2(force3.x,force3.y).normalized;
         FightRules.shoot(2,positionSpawn,force,virusForce,gameObject);
     }
     private static float calculateB1(Vector2 a, float radian, float b2)

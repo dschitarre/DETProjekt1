@@ -18,7 +18,7 @@ public class Impfbar : LivingObject
 
     public int koBulletsFromPolitics=10;
 
-    public static float timeBetweenHusten=1f;
+    public static float timeBetweenHusten=3f;
 
     private int timeToNextHusten=0;
     
