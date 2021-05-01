@@ -132,7 +132,7 @@ public class Game : MonoBehaviour
             // check if normalo is in destination cell
             if (tagCurrent == tagDest) {
                 // set random destination cell
-                lab.GetRandomCellAtMaxDistance(tagCurrent, 4, out tagDest);
+                lab.GetRandomCellAtMaxDistance(tagCurrent, 1 + random.Next(4), out tagDest);
                 int x, y;
                 lab.GetIntsFromTag(tagDest, out x, out y);
                 lab.GetRandomPosInCell(x, y, out posDest);
@@ -145,7 +145,7 @@ public class Game : MonoBehaviour
 
             // move into target direction
             normalo.GetComponent<Rigidbody2D>().velocity = (posNext - posCurrent).normalized * 3;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds((float) (0.75f + 0.5 * random.NextDouble()));
         }
     }
 

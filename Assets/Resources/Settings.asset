@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  size: 10
+  size: 15
   cellSize: 5
   pathLengthRelativeToSize: 4
   wallThickness: 0.4
-  personDensity: 0.25
+  personDensity: 0.18
   probInfected: 0.02
   numberOfImpfgegnerPerAttack: 10
