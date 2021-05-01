@@ -22,7 +22,7 @@ public class Movement : MonoBehaviour
         }
         meineImpfung=gameObject.GetComponent<Impfbar>();
     }
-    void setMovementSpeed(float newMovementSpeed)
+    public void setMovementSpeed(float newMovementSpeed)
     {
         moveSpeed=newMovementSpeed;
     }

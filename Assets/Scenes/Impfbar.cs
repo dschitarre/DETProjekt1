@@ -166,7 +166,7 @@ public class Impfbar : LivingObject
         wuetend=true;
         float playerSpeed=player.getMovementSpeed();
         Movement movement=gameObject.GetComponent<Movement>();
-        movement.setMovementSpeed(movement);
+        movement.setMovementSpeed(playerSpeed);
     }
     public void ruhigStellen(float seconds)
     {
