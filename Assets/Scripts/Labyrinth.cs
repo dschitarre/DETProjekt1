@@ -186,7 +186,6 @@ public class Labyrinth : ScriptableObject
 
         Vector2 newStartPos, newExitPos;
         GetPosFromCell(cellExit.GetPosX(), cellExit.GetPosY(), out newExitPos);
-
         exitPos = newExitPos;
 
         // add outer walls and save entrance and exit
@@ -220,6 +219,7 @@ public class Labyrinth : ScriptableObject
 
         GetPosFromCell(cellEntrance.GetPosX(), cellEntrance.GetPosY(), out newStartPos);
         startPos = newStartPos;
+        
         GameObject.FindWithTag("Player").transform.position = startPos;
         GameObject.FindWithTag("MainCamera").transform.position = (Vector3) startPos + new Vector3(0.0f, 0.0f, -1.0f);
     }
