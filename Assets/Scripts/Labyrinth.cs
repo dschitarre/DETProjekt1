@@ -184,8 +184,10 @@ public class Labyrinth : ScriptableObject
         Cell cellEntrance = bestCellPair.Item1;
         Cell cellExit = bestCellPair.Item2;
 
-        Vector2 startPos, exitPos;
-        GetPosFromCell(cellExit.GetPosX(), cellExit.GetPosY(), out exitPos);
+        Vector2 newStartPos, newExitPos;
+        GetPosFromCell(cellExit.GetPosX(), cellExit.GetPosY(), out newExitPos);
+
+        exitPos = newExitPos;
 
         // add outer walls and save entrance and exit
         foreach (Cell cell in outerCells) {
@@ -216,7 +218,8 @@ public class Labyrinth : ScriptableObject
             GenerateRectangle(posAndSize.x, posAndSize.y, posAndSize.z, posAndSize.w);
         }
 
-        GetPosFromCell(cellEntrance.GetPosX(), cellEntrance.GetPosY(), out startPos);
+        GetPosFromCell(cellEntrance.GetPosX(), cellEntrance.GetPosY(), out newStartPos);
+        startPos = newStartPos;
         GameObject.FindWithTag("Player").transform.position = startPos;
         GameObject.FindWithTag("MainCamera").transform.position = (Vector3) startPos + new Vector3(0.0f, 0.0f, -1.0f);
     }
