@@ -31,8 +31,14 @@ public class GameSettings : ScriptableObject
     public float probInfected;
     [Tooltip("number of Impfgegner spawning per attack")]
     public float numberOfImpfgegnerPerAttack;
-
+    [Tooltip("1: Easy, 2: Medium, 3: Hard, 4: Impossible")]
+    public int difficultLevel;
+   
     public int getNumberOfImpfbare() {
         return (int) (((float) size * size) * personDensity);
+    }
+    public void changeSettingsAtStart(int schwierigkeit)
+    {
+        this.difficultLevel=schwierigkeit;
     }
 }

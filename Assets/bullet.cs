@@ -10,10 +10,16 @@ public class bullet : MonoBehaviour
       
     }
     void OnTriggerEnter2D(Collider2D other) { 
-       Destroy(gameObject);
+        if(!other.gameObject.TryGetComponent<bullet>(out var a)&&!other.gameObject.TryGetComponent<Schlagstock>(out var b))
+        {
+            Destroy(gameObject);
+        }
     }
     void OnCollisionEnter2D(Collision2D collision) {
-        Destroy(gameObject);
+        if(!collision.gameObject.TryGetComponent<bullet>(out var a)&&!collision.gameObject.TryGetComponent<Schlagstock>(out var b))
+        {
+            Destroy(gameObject);
+        }
     }
 }
 
