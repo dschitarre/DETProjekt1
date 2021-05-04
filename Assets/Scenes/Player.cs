@@ -12,7 +12,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         shooting=GetComponent<Shooting>();
-        movement=GetComponent<PlayerMovement>();        
+        movement=GetComponent<PlayerMovement>();
+
+        Game.Instance.SetTexture(gameObject, "player");    
     }
 
     // Update is called once per frame

@@ -47,7 +47,6 @@ public class Game : MonoBehaviour
             Instance = this;
             Debug.Log("registered Level instance", Instance);
         }
-
         
         // load settings
         Settings = GameSettings.Load();
@@ -107,6 +106,14 @@ public class Game : MonoBehaviour
         {
             Debug.LogError("Schlagstock not found");
         }
+    }
+
+    public void SetTexture(GameObject obj, string name) {
+        Texture2D tex = new Texture2D(500, 500);
+        byte[] imageData = System.IO.File.ReadAllBytes("Assets/images/" + name + ".png");
+        tex.LoadImage(imageData);
+        Sprite spr = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 250.0f);
+        obj.GetComponent<SpriteRenderer>().sprite = spr;
     }
 
     private IEnumerator normaloBehavior(GameObject normalo) {
