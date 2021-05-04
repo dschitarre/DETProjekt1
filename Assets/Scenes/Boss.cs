@@ -11,20 +11,31 @@ public class Boss : LivingObject
     {
         leben=100;
         infiziert=true;
-        StartCoroutine(FightRules.coHusten(this,rigidbody,1));
+        StartCoroutine(FightRules.coHusten(this,rigidbody,1, 1f));
+        StartCoroutine(coShooting());
     }
 
     // Update is called once per frame
     void Update()
     {
-        shoot();    
+        rigidbody.velocity=new Vector2(0,0);
     }
 
     void shoot()
     {
         Vector3 forceDirection=FightRules.vectorToPlayer(gameObject.transform.position);
-        Vector3 position=gameObject.transform.position+0.5f*forceDirection;
+        Vector3 position=gameObject.transform.position+1f*forceDirection;
+        Debug.Log("ForceD:"+forceDirection+" , Pos: "+position);
         FightRules.shoot(4,position,forceDirection,bulletForce,gameObject);
+    }
+    IEnumerator coShooting()
+    {
+        yield return new WaitForSeconds(0.5f);
+        while(true)
+        {
+            shoot();
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     
@@ -38,6 +49,7 @@ public class Boss : LivingObject
             }
             else if(bullet.typ==3)
             {
+
                 FightRules.takeDemage(10,this);
             }
         }

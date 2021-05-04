@@ -81,7 +81,7 @@ public class Impfbar : LivingObject
             politiker=true;
         }
         setColor();
-        StartCoroutine(FightRules.coHusten(this,rigidbody,timeBetweenHusten));
+        StartCoroutine(FightRules.coHusten(this,rigidbody,timeBetweenHusten, 0.5f));
     }
     private void setColor()
     {
@@ -146,6 +146,10 @@ public class Impfbar : LivingObject
             else if(bullet.typ==3)
             {
                 Destroy(gameObject);
+                if(meinSchlagstock!=null)
+                {
+                    Destroy(meinSchlagstock.gameObject);
+                }
             }
         }
 

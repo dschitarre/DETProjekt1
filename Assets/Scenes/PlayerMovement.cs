@@ -61,6 +61,10 @@ public class PlayerMovement : LivingObject
                 rigidbody.MovePosition(rigidbody.position+new Vector2(flug.x,flug.y));
             }
         } 
+        if(BossAttack(other.gameObject))
+        {
+            Destroy(gameObject);
+        }
     }
     /*
     returns whether the player dies or not
@@ -90,6 +94,15 @@ public class PlayerMovement : LivingObject
             return false;
         }
         return bullet.typ==2;
+    }
+    bool BossAttack(GameObject other)
+    {
+        bullet bullet=other.GetComponent<bullet>();
+        if(bullet==null)
+        {
+            return false;
+        }
+        return bullet.typ==4;
     }
     public override bool immobile()
     {

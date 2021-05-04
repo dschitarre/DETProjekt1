@@ -12,7 +12,10 @@ public static class FightRules
         if(playerTransformation==null)
         {
             var player = GameObject.FindGameObjectWithTag("Player");
-            playerTransformation=player.transform;
+            if(player!=null)
+            {
+                playerTransformation=player.transform;
+            }
         }
         return playerTransformation;
     }
@@ -44,7 +47,7 @@ public static class FightRules
         bulletScript.typ=bulletTyp;
     }
 
-    public static IEnumerator coHusten(LivingObject livingObject, Rigidbody2D rigidbody, float timeBetween)
+    public static IEnumerator coHusten(LivingObject livingObject, Rigidbody2D rigidbody, float timeBetween, float distanceCovidPeople)
     {
         while(true)
         {
@@ -55,14 +58,14 @@ public static class FightRules
                 {
                     personVelocity=vectorToPlayer(livingObject.transform.position);
                 }
-            shootThreeVirusWithAngle(personVelocity,livingObject.gameObject);
+            shootThreeVirusWithAngle(personVelocity,livingObject.gameObject, distanceCovidPeople);
             }
             yield return new WaitForSeconds(timeBetween);
         }
     }
-    private static void shootThreeVirusWithAngle(Vector3 personVelocity, GameObject gameObject)
+    private static void shootThreeVirusWithAngle(Vector3 personVelocity, GameObject gameObject, float distanceCovidPeople)
     {
-        float distanceSpawnPoint=0.5f;
+        float distanceSpawnPoint=distanceCovidPeople;
         Vector3 a=personVelocity;//vector straight shoot
         if(a.x==0)
         {
@@ -100,10 +103,16 @@ public static class FightRules
     public static Vector3 vectorToPlayer(Vector3 position)
     {
         Vector3 vectorToPlayer=new Vector3(0,0,0);
-        Vector3 positionPlayer=getPlayerTransformation().position;
+        Transform playerTransform=getPlayerTransformation();
+        if(playerTransform==null)
+        {
+            return new Vector3(0,0,0);
+        } 
+        Vector3 positionPlayer=playerTransform.position;
         vectorToPlayer.x=positionPlayer.x-position.x;
         vectorToPlayer.y=positionPlayer.y-position.y;
         vectorToPlayer=vectorToPlayer.normalized;
         return vectorToPlayer;
     }
+
 }

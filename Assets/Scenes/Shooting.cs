@@ -9,20 +9,25 @@ public class Shooting : MonoBehaviour
 
     public int weapon2Number=1;
 
+    private int nextShoot=0;
+
+    void Start()
+    {
+        StartCoroutine(coShooting());
+    }
 
     void Update() {
-        if (Input.GetButtonDown("Fire1")) {
-            ShootImpfpfeil();
-        }
-        if(Input.GetButtonDown("Fire2"))
-        {
-            //ShootTest();
-            ShootBetaeubung();
-        }
-        if(Input.GetButtonDown("Fire3"))
-        {
-            ShootMega();
-        }
+        if(Input.GetButtonDown("Fire1")) {
+                nextShoot=1;
+            }
+            if(Input.GetButtonDown("Fire2")&&specialBullets>0)
+            {
+               nextShoot=2;
+            }
+            if(Input.GetButtonDown("Fire3"))
+            {
+                nextShoot=3;
+            }
     }
 
     void ShootImpfpfeil() {
@@ -72,5 +77,28 @@ public class Shooting : MonoBehaviour
     private float calculateB1(Vector2 a, float radian, float b2)
     {
         return (a.sqrMagnitude*Mathf.Cos(radian)-a.y*b2)/a.x;
+    }
+    
+    IEnumerator coShooting()
+    {
+        while(true)
+        {
+            if(nextShoot==1) {
+                ShootImpfpfeil();
+                yield return new WaitForSeconds(1f);
+            }
+            if(nextShoot==2)
+            {
+                ShootBetaeubung();
+                yield return new WaitForSeconds(3f);
+            }
+            if(nextShoot==3)
+            {
+                yield return new WaitForSeconds(5f);
+                ShootMega();
+            }
+            nextShoot=0;
+            yield return null;
+        }
     }
 }

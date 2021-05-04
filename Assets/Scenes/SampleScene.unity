@@ -236,6 +236,63 @@ Transform:
   m_Father: {fileID: 1270578525}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &651291665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3134536598244548408, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_Name
+      value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.185
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279520991237718415, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}
 --- !u!1 &1270578521
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,10 +348,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba14c0ad0b88f7842964075778688821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leben: 0
+  infiziert: 0
   moveSpeed: 5
   rigidbody: {fileID: 1270578522}
   cam: {fileID: 519420031}
-  leben: 0
+  currentCell: 0,0
 --- !u!212 &1270578524
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -360,7 +419,7 @@ Transform:
   m_Children:
   - {fileID: 550237498}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1270578526
 MonoBehaviour:
@@ -375,9 +434,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 550237498}
-  bulletPrefab: {fileID: 7477062887589675102, guid: d93503a9c67e6f941affe62ab5aa507b, type: 3}
   bulletForce: 20
-  koBullets: 100
+  specialBullets: 100
+  weapon2Number: 1
 --- !u!61 &1270578527
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -434,7 +493,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnPoint: {fileID: 0}
-  impfbare: []
 --- !u!1001 &1852696845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -444,7 +502,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3285080952162492473, guid: 52220397ccda4be449e7e218d377b900, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3285080952162492473, guid: 52220397ccda4be449e7e218d377b900, type: 3}
       propertyPath: m_LocalPosition.x
