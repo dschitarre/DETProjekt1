@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     /// </summary>
     public static Game Instance { get; private set; }
     private GameObject normaloPrefab;
+    private GameObject bossPrefab;
     private Labyrinth lab;
 
 
@@ -19,9 +20,6 @@ public class Game : MonoBehaviour
     /// The game settings.
     /// </summary>
     public GameSettings Settings { get; private set; }
-
-    [Tooltip("Where to spawn the player.")]
-    public Transform SpawnPoint;
 
     //the prefabs of all weapons
 
@@ -56,6 +54,7 @@ public class Game : MonoBehaviour
         lab.Generate();
 
         normaloPrefab = AssetDatabase.LoadAssetAtPath("Assets/Scenes/Normalo.prefab", typeof(GameObject)) as GameObject;
+        bossPrefab = AssetDatabase.LoadAssetAtPath("Assets/Scenes/Boss.prefab", typeof(GameObject)) as GameObject;
 
         int numberOfNormalos = (int) ((float) Settings.size * (float) Settings.size * Settings.personDensity);
         int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
@@ -68,9 +67,10 @@ public class Game : MonoBehaviour
             GameObject normalo = Instantiate(normaloPrefab, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 
             normalos.Add(normalo);
-            StartCoroutine(normaloBehavior(normalo));
+            IEnumerator normaloCoroutine=normaloBehavior(normalo);
+            StartCoroutine(normaloCoroutine);
         }
-
+        GameObject boss = Instantiate(bossPrefab, lab.exitPos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
         /*
 
         for (int i = 0; i < numberOfInfected; i++) {
@@ -133,6 +133,10 @@ public class Game : MonoBehaviour
 
         while (true) {
             yield return new WaitForFixedUpdate();
+            if(movement==null)
+            {
+                break;
+            }
             if (!movement.immobile()) {
                 // update current position
                 posCurrent = normalo.transform.position;

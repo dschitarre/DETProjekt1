@@ -43,5 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902bf7a9134649242bde2a2552856bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPoint: {fileID: 0}
-  impfbare: []
+  bossPrefab: {fileID: 3134536598244548408, guid: 716cbfbe50f25a1479db4a69768d7761, type: 3}

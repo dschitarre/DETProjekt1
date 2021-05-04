@@ -25,7 +25,6 @@ public class Boss : LivingObject
     {
         Vector3 forceDirection=FightRules.vectorToPlayer(gameObject.transform.position);
         Vector3 position=gameObject.transform.position+1f*forceDirection;
-        Debug.Log("ForceD:"+forceDirection+" , Pos: "+position);
         FightRules.shoot(4,position,forceDirection,bulletForce,gameObject);
     }
     IEnumerator coShooting()

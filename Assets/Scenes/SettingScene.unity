@@ -1517,7 +1517,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schwierigkeit: 1
-  movingWalls: 1
   SchwierigkeitsentscheidungScenenname: SettingScene
   gameSceneName: SampleScene
 --- !u!114 &1576417350
