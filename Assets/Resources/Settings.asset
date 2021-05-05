@@ -17,6 +17,6 @@ MonoBehaviour:
   pathLengthRelativeToSize: 4
   wallThickness: 0.4
   personDensity: 0.18
-  probInfected: 0.02
+  probInfected: 0.1
   numberOfImpfgegnerPerAttack: 10
   difficultLevel: 1

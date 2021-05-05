@@ -6,10 +6,12 @@ using UnityEditor;
 public class Game : MonoBehaviour
 {
     public List<GameObject> normalos = new List<GameObject>();
+
     public int anzahlInfizierte=0;
 
     public int anzahlGeimpfte=0;
 
+    public List<GameObject> normalosInfected = new List<GameObject>();
     /// <summary>
     /// The singleton instance.
     /// </summary>
@@ -46,7 +48,7 @@ public class Game : MonoBehaviour
             Instance = this;
             Debug.Log("registered Level instance", Instance);
         }
-        
+        loadWeapons();
         // load settings
         Settings = GameSettings.Load();
         
@@ -61,7 +63,9 @@ public class Game : MonoBehaviour
         
         int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
 
+        int numberOfImpfgegner = (int) Mathf.Ceil(numberOfNormalos * Settings.probImpfgegner);
 
+        Debug.Log("NoN: "+numberOfNormalos+" , NOINF: " +numberOfInfected+" , NOIG: "+numberOfImpfgegner);
         for (int i = 0; i < numberOfNormalos; i++) {
             Vector2Int cell = new Vector2Int(random.Next(Settings.size), random.Next(Settings.size));
 
@@ -70,12 +74,23 @@ public class Game : MonoBehaviour
             GameObject normalo = Instantiate(normaloPrefab, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 
             normalos.Add(normalo);
+            Impfbar impfbar=normalo.GetComponent<Impfbar>();
+            if(i<4)
+            {
+                impfbar.werdePolitiker(i);
+            }
+            else if(i-4<numberOfInfected)
+            {
+                impfbar.infizieren();
+            }
+            if(numberOfNormalos-numberOfImpfgegner<=i)
+            {
+                impfbar.werdeImpfgegner();
+            }
             IEnumerator normaloCoroutine=normaloBehavior(normalo);
             StartCoroutine(normaloCoroutine);
         }
         GameObject boss = Instantiate(bossPrefab, lab.exitPos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-        
-        /*
 
         for (int i = 0; i < numberOfInfected; i++) {
             int randomIndex;
@@ -86,11 +101,13 @@ public class Game : MonoBehaviour
             GameObject randomNormalo = normalos[randomIndex];
             normalosInfected.Add(randomNormalo);
             randomNormalo.GetComponent<Impfbar>().infiziert = true;
+            randomNormalo.GetComponent<Impfbar>().infizieren();
         }
 
-        Debug.Log(normalos.Count + ", " + normalosInfected.Count);
-        */
-
+        
+    }
+    public void loadWeapons()
+    {
         waeponPrefabs=new GameObject[6];
         waeponPrefabs[0]=AssetDatabase.LoadAssetAtPath("Assets/CoronaSpritze.prefab", typeof(GameObject)) as GameObject;
         waeponPrefabs[1]=AssetDatabase.LoadAssetAtPath("Assets/KoSpritze.prefab", typeof(GameObject)) as GameObject;
@@ -111,7 +128,6 @@ public class Game : MonoBehaviour
             Debug.LogError("Schlagstock not found");
         }
     }
-
     public void SetTexture(GameObject obj, string name) {
         Texture2D tex = new Texture2D(500, 500);
         byte[] imageData = System.IO.File.ReadAllBytes("Assets/images/" + name + ".png");

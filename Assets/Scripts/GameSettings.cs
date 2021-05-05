@@ -29,8 +29,10 @@ public class GameSettings : ScriptableObject
     public float personDensity;
     [Tooltip("probability of a person spawning infected")]
     public float probInfected;
-    [Tooltip("number of Impfgegner spawning per attack")]
-    public float numberOfImpfgegnerPerAttack;
+    
+    [Tooltip("probability of a person spawning being impfgegner")]
+    public float probImpfgegner;
+
     [Tooltip("1: Easy, 2: Medium, 3: Hard, 4: Impossible")]
     public int difficultLevel;
    
@@ -44,18 +46,26 @@ public class GameSettings : ScriptableObject
         this.difficultLevel=schwierigkeit;
         if(schwierigkeit==1)
         {
+            probInfected=0.1f;
+            probImpfgegner=0.05f;
             bossLives=40;
         }
         if(schwierigkeit==2)
         {
+            probInfected=0.2f;
+            probImpfgegner=0.1f;
             bossLives=60;
         }
         if(schwierigkeit==3)
         {
+            probInfected=0.3f;
+            probImpfgegner=0.2f;
             bossLives=100;
         }
         if(schwierigkeit==4)
         {
+            probInfected=0.5f;
+            probImpfgegner=0.5f;
             bossLives=200;
         }
     }

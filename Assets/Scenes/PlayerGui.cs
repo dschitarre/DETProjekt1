@@ -16,7 +16,7 @@ public class PlayerGui : MonoBehaviour {
     }
 
     void Update() {
-        infektionsrate.GetComponent<TextMeshProUGUI>().SetText("50%");
+        infektionsrate.GetComponent<TextMeshProUGUI>().SetText( (100 * Game.Instance.normalosInfected.Count / Game.Instance.normalos.Count).ToString() + "%");
         lebenAnzahl.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<PlayerMovement>().leben.ToString());
         coronaSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText("inf");
         koSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().specialBullets.ToString());

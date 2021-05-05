@@ -39,6 +39,13 @@ public class Impfbar : LivingObject
     private Schlagstock meinSchlagstock;//Schlagstock of Impfgegner or null
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        if(random==null)
+        {
+            random=new System.Random();
+        }
+    }
     void Start()
     {
         leben=1;
@@ -63,26 +70,6 @@ public class Impfbar : LivingObject
             Destroy(gameObject);
             return;
         }
-        if(random==null)
-        {
-            random=new System.Random();
-        }
-        if(random.Next(10)<=1)
-        {
-            Impfgegner=true;
-            addSchlagstock();
-            Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "attila_hildmann" : "xavier_naidoo");
-        }
-        if(random.Next(10)<=1)
-        {
-            infizieren();
-        }
-        if(random.Next(10)<=1)
-        {
-            politiker=true;
-            string[] politikerNamen = {"karl_lauterbach", "alice_weidel", "armin_laschet", "markus_soeder"};
-            Game.Instance.SetTexture(gameObject, politikerNamen[random.Next(politikerNamen.Length)]);
-        }
         setColor();
         StartCoroutine(FightRules.coHusten(this,new System.Random(), rigidbody, timeBetweenHusten, 0.5f));
     }
@@ -97,6 +84,18 @@ public class Impfbar : LivingObject
         {
             Game.Instance.anzahlGeimpfte--;
         }
+    }
+    public void werdeImpfgegner()
+    {
+        Impfgegner=true;
+        addSchlagstock();
+        Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "attila_hildmann" : "xavier_naidoo");
+    }
+    public void werdePolitiker(int nr)
+    {
+         politiker=true;
+        string[] politikerNamen = {"karl_lauterbach", "angela_merkel", "armin_laschet", "markus_soeder"};
+        Game.Instance.SetTexture(gameObject, politikerNamen[nr]);
     }
     private void setColor()
     {
@@ -218,7 +217,7 @@ public class Impfbar : LivingObject
     {
         Vector3 positionSpawn=gameObject.transform.position;
         positionSpawn.x-=0.6f;
-         GameObject schlagstock = Instantiate(Game.waeponPrefabs[Game.SchlagstockNumber],positionSpawn , gameObject.transform.rotation);
+        GameObject schlagstock = Instantiate(Game.waeponPrefabs[Game.SchlagstockNumber],positionSpawn , gameObject.transform.rotation);
         if(schlagstock==null)
         {
             Debug.Log("No schlagstock");
