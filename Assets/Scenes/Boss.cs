@@ -11,7 +11,7 @@ public class Boss : LivingObject
     {
         leben=100;
         infiziert=true;
-        StartCoroutine(FightRules.coHusten(this,rigidbody,1, 1f));
+        StartCoroutine(FightRules.coHusten(this, new System.Random(gameObject.transform.position.GetHashCode()), rigidbody,1, 1f));
         StartCoroutine(coShooting());
     }
 
@@ -25,7 +25,7 @@ public class Boss : LivingObject
     {
         Vector3 forceDirection=FightRules.vectorToPlayer(gameObject.transform.position);
         Vector3 position=gameObject.transform.position+1f*forceDirection;
-        Debug.Log("ForceD:"+forceDirection+" , Pos: "+position);
+        //Debug.Log("ForceD:"+forceDirection+" , Pos: "+position);
         FightRules.shoot(4,position,forceDirection,bulletForce,gameObject);
     }
     IEnumerator coShooting()

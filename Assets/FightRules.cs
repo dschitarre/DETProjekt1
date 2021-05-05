@@ -47,7 +47,7 @@ public static class FightRules
         bulletScript.typ=bulletTyp;
     }
 
-    public static IEnumerator coHusten(LivingObject livingObject, Rigidbody2D rigidbody, float timeBetween, float distanceCovidPeople)
+    public static IEnumerator coHusten(LivingObject livingObject, System.Random random, Rigidbody2D rigidbody, float timeBetween, float distanceCovidPeople)
     {
         while(true)
         {
@@ -60,7 +60,7 @@ public static class FightRules
                 }
             shootThreeVirusWithAngle(personVelocity,livingObject.gameObject, distanceCovidPeople);
             }
-            yield return new WaitForSeconds(timeBetween);
+            yield return new WaitForSeconds((float) ((0.5 + random.NextDouble()) * (double) timeBetween));
         }
     }
     private static void shootThreeVirusWithAngle(Vector3 personVelocity, GameObject gameObject, float distanceCovidPeople)
