@@ -9,6 +9,7 @@ public class Boss : LivingObject
     public float bulletForce=5f;
     void Start()
     {
+         Game.Instance.SetTexture(gameObject, "bill_gates");
         leben=Game.Instance.Settings.bossLives;
         infiziert=true;
         StartCoroutine(FightRules.coHusten(this, new System.Random(gameObject.transform.position.GetHashCode()), rigidbody,1, 1f));

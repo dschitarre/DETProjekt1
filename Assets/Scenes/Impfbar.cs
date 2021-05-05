@@ -15,7 +15,6 @@ public class Impfbar : LivingObject
     public bool Impfgegner=false;
 
     public bool wuetend=false;
-    public static float timeBetweenHusten=3f;
 
     private int timeToNextHusten=0;
     
@@ -68,7 +67,7 @@ public class Impfbar : LivingObject
             return;
         }
         setColor();
-        StartCoroutine(FightRules.coHusten(this,new System.Random(), rigidbody, timeBetweenHusten, 0.5f));
+        StartCoroutine(FightRules.coHusten(this,new System.Random(), rigidbody, Game.Instance.Settings.timeBetweenHusten, 0.5f));
     }
     void OnDestroy()
     {

@@ -43,6 +43,8 @@ public class GameSettings : ScriptableObject
     public int koBulletsVonPolitikern;
 
     public int raketenVonPolitiker;
+
+    public float timeBetweenHusten=3f;
     public int getNumberOfImpfbare() {
         return (int) (((float) size * size) * personDensity);
     }
@@ -54,7 +56,8 @@ public class GameSettings : ScriptableObject
             probInfected=0.1f;
             probImpfgegner=0.05f;
             bossLives=40;
-            setBulletsVonPolitikern(20,20,20);
+            setBulletsVonPolitikern(20,20,20);  
+            timeBetweenHusten=4f;
         }
         if(schwierigkeit==2)
         {
@@ -62,6 +65,7 @@ public class GameSettings : ScriptableObject
             probImpfgegner=0.1f;
             bossLives=60;
             setBulletsVonPolitikern(20,10,10);
+            timeBetweenHusten=3f;
         }
         if(schwierigkeit==3)
         {
@@ -69,6 +73,7 @@ public class GameSettings : ScriptableObject
             probImpfgegner=0.2f;
             bossLives=100;
             setBulletsVonPolitikern(15,5,5);
+            timeBetweenHusten=2f;
         }
         if(schwierigkeit==4)
         {
@@ -76,6 +81,7 @@ public class GameSettings : ScriptableObject
             probImpfgegner=0.5f;
             bossLives=200;
             setBulletsVonPolitikern(10,2,5);
+            timeBetweenHusten=1f;
         }
     }
     private void setBulletsVonPolitikern(int impfDosen, int koBullets, int raketen)

@@ -11,6 +11,8 @@ public class Schlagstock : MonoBehaviour
 
     public Rigidbody2D userRigidbody;
 
+    private static Transform playerTransform;
+
     public float speed;//a bit higher than user speed 
 
     int setHandCooldown=100;
@@ -22,6 +24,12 @@ public class Schlagstock : MonoBehaviour
         {
             Debug.Log("No User Rigidbody");
             Destroy(gameObject);
+        }
+        if(playerTransform==null)
+        {
+             var playerObject = GameObject.FindGameObjectWithTag("Player");
+            playerTransform=playerObject.GetComponent<Transform>();
+
         }
     }
 
@@ -41,14 +49,24 @@ public class Schlagstock : MonoBehaviour
         Vector3 position=gameObject.transform.position;
         moveDirection.x=positionBesitzer.x-position.x;
         moveDirection.y=positionBesitzer.y-position.y;
-        setHand();
-        if(inRightHand)
+        if(playerTransform)
         {
-            moveDirection.x+=0.5f;
-        }
-        else
-        {
-            moveDirection.x-=0.5f;
+            if(playerTransform.position.x-position.x>0)
+            {
+                moveDirection.x+=0.5f;
+            }
+            else
+            {
+                moveDirection.x-=0.5f;
+            }
+            if(playerTransform.position.y-position.y>0)
+            {
+                moveDirection.y+=0.5f;
+            }
+            else
+            {
+                moveDirection.y-=0.5f;
+            }
         }
         moveDirection=moveDirection.normalized;
     }
@@ -58,21 +76,6 @@ public class Schlagstock : MonoBehaviour
     }
     void setHand()
     {
-        if(setHandCooldown>0)
-        {
-            setHandCooldown--;
-        }
-        else
-        {
-            setHandCooldown=100;
-            if(moveDirection.x>=0)
-            {
-                inRightHand=true;
-            }
-            else
-            {
-                inRightHand=false;
-            }
-        }
+        
     }
 }

@@ -63,7 +63,7 @@ public class PlayerMovement : LivingObject
         } 
         if(BossAttack(other.gameObject))
         {
-            Destroy(gameObject);
+            FightRules.takeDemage(leben,this);
         }
     }
     /*
