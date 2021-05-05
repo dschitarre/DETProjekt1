@@ -5,8 +5,8 @@ using UnityEditor;
 
 public class Game : MonoBehaviour
 {
-    List<GameObject> normalos = new List<GameObject>();
-    List<GameObject> normalosInfected = new List<GameObject>();
+    public List<GameObject> normalos = new List<GameObject>();
+    public List<GameObject> normalosInfected = new List<GameObject>();
     /// <summary>
     /// The singleton instance.
     /// </summary>
@@ -71,7 +71,6 @@ public class Game : MonoBehaviour
             StartCoroutine(normaloCoroutine);
         }
         GameObject boss = Instantiate(bossPrefab, lab.exitPos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-        /*
 
         for (int i = 0; i < numberOfInfected; i++) {
             int randomIndex;
@@ -82,10 +81,8 @@ public class Game : MonoBehaviour
             GameObject randomNormalo = normalos[randomIndex];
             normalosInfected.Add(randomNormalo);
             randomNormalo.GetComponent<Impfbar>().infiziert = true;
+            randomNormalo.GetComponent<Impfbar>().infizieren();
         }
-
-        Debug.Log(normalos.Count + ", " + normalosInfected.Count);
-        */
 
         waeponPrefabs=new GameObject[6];
         waeponPrefabs[0]=AssetDatabase.LoadAssetAtPath("Assets/CoronaSpritze.prefab", typeof(GameObject)) as GameObject;

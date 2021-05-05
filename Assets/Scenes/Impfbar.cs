@@ -75,10 +75,6 @@ public class Impfbar : LivingObject
         }
         if(random.Next(10)<=1)
         {
-            infiziert=true;
-        }
-        if(random.Next(10)<=1)
-        {
             politiker=true;
             string[] politikerNamen = {"karl_lauterbach", "alice_weidel", "armin_laschet", "markus_soeder"};
             Game.Instance.SetTexture(gameObject, politikerNamen[random.Next(politikerNamen.Length)]);
