@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class Game : MonoBehaviour
     public static readonly int SchlagstockNumber=5;
     ///zeigt auf erstes freies Feld vom Array normalos
     private System.Random random = new System.Random();
+
+    private string endString;
     private void Awake()
     {
         // there can be only one...
@@ -191,5 +194,15 @@ public class Game : MonoBehaviour
             Instance = null;
             Debug.Log("unregistered Level instance", Instance);
         }
+    }
+    public void loose()
+    {
+        Time.timeScale=0f;
+         SceneManager.LoadScene("LooseScene", LoadSceneMode.Additive);
+    }
+    public void win()
+    {
+        Time.timeScale=0f;
+         SceneManager.LoadScene("VictoryScene", LoadSceneMode.Additive);
     }
 }

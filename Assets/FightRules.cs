@@ -25,6 +25,10 @@ public static class FightRules
         if(livingObject.leben<=0)
         {
             MonoBehaviour.Destroy(livingObject.gameObject);
+            if(livingObject.TryGetComponent<Player>(out var player))
+            {
+                Game.Instance.loose();
+            }
             return true;
         }
         return false;

@@ -60,9 +60,8 @@ public class StartGui : UIBehaviour, ICancelHandler
     }
     private void startGame()
     {
+        Resources.Load<GameSettings>("Settings").changeSettingsAtStart(schwierigkeit);
         SceneManager.LoadScene("GUI", LoadSceneMode.Single);
         SceneManager.LoadScene(gameSceneName, LoadSceneMode.Additive);
-        Resources.Load<GameSettings>("Settings").changeSettingsAtStart(schwierigkeit);
-        
     }
 }
