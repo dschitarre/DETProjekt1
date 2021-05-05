@@ -5,13 +5,12 @@ using UnityEditor;
 
 public class Game : MonoBehaviour
 {
-    public List<GameObject> normalos = new List<GameObject>();
-
+    
     public int anzahlInfizierte=0;
 
     public int anzahlGeimpfte=0;
 
-    public List<GameObject> normalosInfected = new List<GameObject>();
+    public int anzahlNormalos=0;
     /// <summary>
     /// The singleton instance.
     /// </summary>
@@ -32,7 +31,6 @@ public class Game : MonoBehaviour
 
     public static readonly int SchlagstockNumber=5;
     ///zeigt auf erstes freies Feld vom Array normalos
-    private int zeigerImpfbare;
     private System.Random random = new System.Random();
     private void Awake()
     {
@@ -61,6 +59,8 @@ public class Game : MonoBehaviour
 
         int numberOfNormalos = (int) ((float) Settings.size * (float) Settings.size * Settings.personDensity);
         
+        anzahlNormalos=numberOfNormalos;
+
         int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
 
         int numberOfImpfgegner = (int) Mathf.Ceil(numberOfNormalos * Settings.probImpfgegner);
@@ -73,7 +73,6 @@ public class Game : MonoBehaviour
             lab.GetPosFromCell(cell.x, cell.y, out pos);
             GameObject normalo = Instantiate(normaloPrefab, pos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
 
-            normalos.Add(normalo);
             Impfbar impfbar=normalo.GetComponent<Impfbar>();
             if(i<4)
             {
@@ -91,20 +90,6 @@ public class Game : MonoBehaviour
             StartCoroutine(normaloCoroutine);
         }
         GameObject boss = Instantiate(bossPrefab, lab.exitPos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
-
-        for (int i = 0; i < numberOfInfected; i++) {
-            int randomIndex;
-            do {
-                randomIndex = random.Next(normalos.Count);
-            } while (normalos[randomIndex].GetComponent<Impfbar>().infiziert);
-
-            GameObject randomNormalo = normalos[randomIndex];
-            normalosInfected.Add(randomNormalo);
-            randomNormalo.GetComponent<Impfbar>().infiziert = true;
-            randomNormalo.GetComponent<Impfbar>().infizieren();
-        }
-
-        
     }
     public void loadWeapons()
     {

@@ -75,7 +75,7 @@ public class Impfbar : LivingObject
     }
     void OnDestroy()
     {
-        Game.Instance.normalos.Remove(gameObject);
+        Game.Instance.anzahlNormalos--;
         if(infiziert)
         {
             Game.Instance.anzahlInfizierte--;
