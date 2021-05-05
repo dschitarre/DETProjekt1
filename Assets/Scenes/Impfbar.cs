@@ -22,15 +22,15 @@ public class Impfbar : LivingObject
 
     private int timeToNextHusten=0;
     
-    private static Color colorImpfgegner=new Color(1f, 0.92f, 0.016f, 1f);
+    private static Color colorImpfgegner=Color.white;
 
     private static Color colorInfiziert=Color.red;
 
-    private static Color colorWuetend=new Color(1f, 0f, 1f, 1f);
+    private static Color colorWuetend=(Color.red + Color.white) / 2;
 
-    private Color colorGeheilt=Color.blue;
+    private Color colorGeheilt=new Color(0.1f,0.7f,0.1f,1f);
 
-    private Color colorNormal=new Color(0f,1f,0f,1f);
+    private Color colorNormal=new Color(0.65f,0.65f,0.65f,1f);
 
     private static Player player;
 
@@ -71,6 +71,7 @@ public class Impfbar : LivingObject
         {
             Impfgegner=true;
             addSchlagstock();
+            Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "attila_hildmann" : "xavier_naidoo");
         }
         if(random.Next(10)<=1)
         {
@@ -79,9 +80,11 @@ public class Impfbar : LivingObject
         if(random.Next(10)<=1)
         {
             politiker=true;
+            string[] politikerNamen = {"karl_lauterbach", "alice_weidel", "armin_laschet", "markus_soeder"};
+            Game.Instance.SetTexture(gameObject, politikerNamen[random.Next(politikerNamen.Length)]);
         }
         setColor();
-        StartCoroutine(FightRules.coHusten(this,rigidbody,timeBetweenHusten, 0.5f));
+        StartCoroutine(FightRules.coHusten(this,new System.Random(), rigidbody, timeBetweenHusten, 0.5f));
     }
     void OnDestroy()
     {

@@ -11,7 +11,7 @@ public class Boss : LivingObject
     {
         leben=Game.Instance.Settings.bossLives;
         infiziert=true;
-        StartCoroutine(FightRules.coHusten(this,rigidbody,1, 1f));
+        StartCoroutine(FightRules.coHusten(this, new System.Random(gameObject.transform.position.GetHashCode()), rigidbody,1, 1f));
         StartCoroutine(coShooting());
     }
 
