@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535837299abe37c45b9d69206c6e7f14, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  moveSpeed: 3
   size: 15
   cellSize: 5
   pathLengthRelativeToSize: 4
@@ -20,3 +19,4 @@ MonoBehaviour:
   personDensity: 0.18
   probInfected: 0.02
   numberOfImpfgegnerPerAttack: 10
+  difficultLevel: 1
