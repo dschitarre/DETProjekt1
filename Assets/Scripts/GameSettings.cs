@@ -34,11 +34,29 @@ public class GameSettings : ScriptableObject
     [Tooltip("1: Easy, 2: Medium, 3: Hard, 4: Impossible")]
     public int difficultLevel;
    
+    public int bossLives;
+
     public int getNumberOfImpfbare() {
         return (int) (((float) size * size) * personDensity);
     }
     public void changeSettingsAtStart(int schwierigkeit)
     {
         this.difficultLevel=schwierigkeit;
+        if(schwierigkeit==1)
+        {
+            bossLives=40;
+        }
+        if(schwierigkeit==2)
+        {
+            bossLives=60;
+        }
+        if(schwierigkeit==3)
+        {
+            bossLives=100;
+        }
+        if(schwierigkeit==4)
+        {
+            bossLives=200;
+        }
     }
 }

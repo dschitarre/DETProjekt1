@@ -74,7 +74,7 @@ public class Impfbar : LivingObject
         }
         if(random.Next(10)<=1)
         {
-            infiziert=true;
+            infizieren();
         }
         if(random.Next(10)<=1)
         {
@@ -82,6 +82,18 @@ public class Impfbar : LivingObject
         }
         setColor();
         StartCoroutine(FightRules.coHusten(this,rigidbody,timeBetweenHusten, 0.5f));
+    }
+    void OnDestroy()
+    {
+        Game.Instance.normalos.Remove(gameObject);
+        if(infiziert)
+        {
+            Game.Instance.anzahlInfizierte--;
+        }
+        if(geimpft)
+        {
+            Game.Instance.anzahlGeimpfte--;
+        }
     }
     private void setColor()
     {
@@ -156,17 +168,25 @@ public class Impfbar : LivingObject
     }
     public void geimpftWerden()
     {
-        geimpft=true;
-        infiziert=false;
-        if(Impfgegner)
+        if(!geimpft)
         {
-            wuetendWerden();
+            geimpft=true;
+            Game.Instance.anzahlGeimpfte++;
+            if(infiziert)
+            {  
+                Game.Instance.anzahlInfizierte--;
+                infiziert=false;
+            }
+            if(Impfgegner)
+            {
+                wuetendWerden();
+            }
+            else if(politiker)
+            {
+                player.addKOBullets(koBulletsFromPolitics);
+            }
+            setColor();
         }
-        else if(politiker)
-        {
-            player.addKOBullets(koBulletsFromPolitics);
-        }
-        setColor();
     }
     public void wuetendWerden()
     {
@@ -183,9 +203,10 @@ public class Impfbar : LivingObject
     }
     public void infizieren()
     {
-        if(!geimpft)
+        if(!geimpft&&!infiziert)
         {
             infiziert=true;
+            Game.Instance.anzahlInfizierte++;
             setColor();
         }
         

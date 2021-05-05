@@ -5,8 +5,11 @@ using UnityEditor;
 
 public class Game : MonoBehaviour
 {
-    List<GameObject> normalos = new List<GameObject>();
-    List<GameObject> normalosInfected = new List<GameObject>();
+    public List<GameObject> normalos = new List<GameObject>();
+    public int anzahlInfizierte=0;
+
+    public int anzahlGeimpfte=0;
+
     /// <summary>
     /// The singleton instance.
     /// </summary>
@@ -26,8 +29,6 @@ public class Game : MonoBehaviour
     public static GameObject[] waeponPrefabs;
 
     public static readonly int SchlagstockNumber=5;
-    ///allNormalos
-    private Impfbar[] impfbare;
     ///zeigt auf erstes freies Feld vom Array normalos
     private int zeigerImpfbare;
     private System.Random random = new System.Random();
@@ -57,7 +58,9 @@ public class Game : MonoBehaviour
         bossPrefab = AssetDatabase.LoadAssetAtPath("Assets/Scenes/Boss.prefab", typeof(GameObject)) as GameObject;
 
         int numberOfNormalos = (int) ((float) Settings.size * (float) Settings.size * Settings.personDensity);
+        
         int numberOfInfected = (int) Mathf.Ceil(numberOfNormalos * Settings.probInfected);
+
 
         for (int i = 0; i < numberOfNormalos; i++) {
             Vector2Int cell = new Vector2Int(random.Next(Settings.size), random.Next(Settings.size));
@@ -71,6 +74,7 @@ public class Game : MonoBehaviour
             StartCoroutine(normaloCoroutine);
         }
         GameObject boss = Instantiate(bossPrefab, lab.exitPos, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f));
+        
         /*
 
         for (int i = 0; i < numberOfInfected; i++) {

@@ -9,7 +9,7 @@ public class Boss : LivingObject
     public float bulletForce=5f;
     void Start()
     {
-        leben=100;
+        leben=Game.Instance.Settings.bossLives;
         infiziert=true;
         StartCoroutine(FightRules.coHusten(this,rigidbody,1, 1f));
         StartCoroutine(coShooting());
