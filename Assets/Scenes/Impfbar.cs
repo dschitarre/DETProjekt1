@@ -67,7 +67,7 @@ public class Impfbar : LivingObject
             return;
         }
         setColor();
-        StartCoroutine(FightRules.coHusten(this,new System.Random(), rigidbody, Game.Instance.Settings.timeBetweenHusten, 0.5f));
+        StartCoroutine(FightRules.coHusten(this,random, rigidbody, Game.Instance.Settings.timeBetweenHusten, 0.5f));
     }
     void OnDestroy()
     {
