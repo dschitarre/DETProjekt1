@@ -18,9 +18,9 @@ public class PlayerGui : MonoBehaviour {
     void Update() {
         infektionsrate.GetComponent<TextMeshProUGUI>().SetText( (100 * Game.Instance.anzahlInfizierte / Game.Instance.anzahlNormalos).ToString() + "%");
         lebenAnzahl.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<PlayerMovement>().leben.ToString());
-        coronaSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText("inf");
-        koSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().specialBullets.ToString());
-        raketenLeft.GetComponent<TextMeshProUGUI>().SetText("inf");
+        coronaSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().impfDosen.ToString());
+        koSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().koBullets.ToString());
+        raketenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().raketen.ToString());
 
         ladeanzeige.GetComponent<RectTransform>().localScale = new Vector3((Time.time % 2) / 2, 1, 1);
     }

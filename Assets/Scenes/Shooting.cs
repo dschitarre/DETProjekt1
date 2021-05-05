@@ -5,8 +5,11 @@ public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
     public float bulletForce = 20f;
-    public int specialBullets=100;
 
+    public int impfDosen=20;
+    public int koBullets=5;
+
+    public int raketen=0;
     public int weapon2Number=1;
 
     private int nextShoot=0;
@@ -17,42 +20,52 @@ public class Shooting : MonoBehaviour
     }
 
     void Update() {
-        if(Input.GetButtonDown("Fire1")) {
+        if(Input.GetButtonDown("Fire1")&&impfDosen>0) {
                 nextShoot=1;
             }
-            if(Input.GetButtonDown("Fire2")&&specialBullets>0)
+            if(Input.GetButtonDown("Fire2")&&koBullets>0)
             {
                nextShoot=2;
             }
-            if(Input.GetButtonDown("Fire3"))
+            if(Input.GetButtonDown("Fire3")&&raketen>0)
             {
                 nextShoot=3;
             }
     }
 
     void ShootImpfpfeil() {
-        FightRules.shoot(0,firePoint,bulletForce);
+        if(impfDosen>0)
+        {
+            impfDosen--;
+            FightRules.shoot(0,firePoint,bulletForce);
+        }
     }
 
     void ShootBetaeubung(){
-        if(specialBullets>0)
+        if(koBullets>0)
         {
-            specialBullets--;
+            koBullets--;
             FightRules.shoot(1,firePoint,bulletForce);
         }
     }
 
     void ShootMega()
     {
-        FightRules.shoot(3,firePoint,bulletForce);
+        if(raketen>0)
+        {
+            raketen--;
+            FightRules.shoot(3,firePoint,bulletForce);
+        }
     }
     void Shoot(Vector2 force, Vector3 positionSpawn)
     {
         FightRules.shoot(0,positionSpawn,force,bulletForce,gameObject);
     }
-    public void addKOBullets(int count)
+    public void addBullets(int impfDosen, int koBullets, int raketen)
     {
-        specialBullets+=count;
+        this.impfDosen+=impfDosen;
+        this.koBullets+=koBullets;
+        this.raketen+=raketen;
     }
     private void ShootTest()
     {
@@ -90,7 +103,7 @@ public class Shooting : MonoBehaviour
             if(nextShoot==2)
             {
                 ShootBetaeubung();
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(1f);
             }
             if(nextShoot==3)
             {

@@ -22,9 +22,10 @@ public class Player : MonoBehaviour
     {
         
     }
-    public void addKOBullets(int count)
+    public void addBullets(int impfDosen, int koBullets, int raketen)
     {
-        shooting.addKOBullets(count);
+        Debug.Log(impfDosen+","+koBullets+","+raketen);
+        shooting.addBullets(impfDosen,koBullets,raketen);
     }
     public float getMovementSpeed()
     {

@@ -15,9 +15,6 @@ public class Impfbar : LivingObject
     public bool Impfgegner=false;
 
     public bool wuetend=false;
-
-    public int koBulletsFromPolitics=10;
-
     public static float timeBetweenHusten=3f;
 
     private int timeToNextHusten=0;
@@ -185,7 +182,7 @@ public class Impfbar : LivingObject
             }
             else if(politiker)
             {
-                player.addKOBullets(koBulletsFromPolitics);
+                player.addBullets(Game.Instance.Settings.impfDosenVonPolitikern,Game.Instance.Settings.koBulletsVonPolitikern,Game.Instance.Settings.raketenVonPolitiker);
             }
             setColor();
         }
