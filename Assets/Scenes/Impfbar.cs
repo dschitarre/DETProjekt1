@@ -11,6 +11,7 @@ public class Impfbar : LivingObject
     public int distanceInfizierung=50;
     public bool geimpft = false;
 
+    private bool weiblich=true;
     public bool politiker=false;  
     public bool Impfgegner=false;
 
@@ -41,6 +42,7 @@ public class Impfbar : LivingObject
         {
             random=new System.Random();
         }
+        weiblich=random.Next()==1;
     }
     void Start()
     {
@@ -65,6 +67,14 @@ public class Impfbar : LivingObject
             Debug.LogError("No rigidbody");
             Destroy(gameObject);
             return;
+        }
+        if(weiblich)
+        {
+             Game.Instance.SetTexture(gameObject,"Geimpft_W", 0.8f);
+        }
+        else
+        {
+            Game.Instance.SetTexture(gameObject, "Geimpft_M", 0.8f);
         }
         setColor();
         StartCoroutine(FightRules.coHusten(this,random, rigidbody, Game.Instance.Settings.timeBetweenHusten, 0.5f));
@@ -183,6 +193,17 @@ public class Impfbar : LivingObject
             {
                 player.addBullets(Game.Instance.Settings.impfDosenVonPolitikern,Game.Instance.Settings.koBulletsVonPolitikern,Game.Instance.Settings.raketenVonPolitiker);
             }
+            else
+            {
+                if(weiblich)
+                {
+                     Game.Instance.SetTexture(gameObject,"Geimpft_W", 0.8f);
+                }
+                else
+                {
+                    Game.Instance.SetTexture(gameObject, "Geimpft_M", 0.8f);
+                }
+            }
             setColor();
         }
     }
@@ -207,7 +228,14 @@ public class Impfbar : LivingObject
             Game.Instance.anzahlInfizierte++;
             if(!politiker&&!Impfgegner)
             {
-                Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "Corona_W" : "Corona_M", 0.8f);
+                if(weiblich)
+                {
+                     Game.Instance.SetTexture(gameObject,"Corona_W", 0.8f);
+                }
+                else
+                {
+                    Game.Instance.SetTexture(gameObject, "Corona_M", 0.8f);
+                }
             }
             setColor();
         }
