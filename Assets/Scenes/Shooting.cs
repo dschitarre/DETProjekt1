@@ -49,13 +49,23 @@ public class Shooting : MonoBehaviour
         }
     }
 
-    void ShootMega()
+    IEnumerator CoShootMega()
     {
         if(raketen>0)
         {
+            float timeLeft = 3.0f;
+
+            while (timeLeft > 0) {
+                timeLeft -= Time.deltaTime;
+                GameObject.Find("Canvas/ladeanzeige").GetComponent<RectTransform>().localScale = new Vector3((3-timeLeft) / 3, 1, 1);
+                yield return new WaitForEndOfFrame();
+            }
+            
             raketen--;
             FightRules.shoot(3,firePoint,bulletForce);
+            GameObject.Find("Canvas/ladeanzeige").GetComponent<RectTransform>().localScale = new Vector3(0, 1, 1);
         }
+        yield return null;
     }
     void Shoot(Vector2 force, Vector3 positionSpawn)
     {
@@ -107,8 +117,7 @@ public class Shooting : MonoBehaviour
             }
             if(nextShoot==3)
             {
-                yield return new WaitForSeconds(5f);
-                ShootMega();
+                yield return StartCoroutine(CoShootMega());
             }
             nextShoot=0;
             yield return null;

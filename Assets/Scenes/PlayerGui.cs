@@ -12,7 +12,6 @@ public class PlayerGui : MonoBehaviour {
         coronaSpritzenLeft = GameObject.Find("Canvas/coronaSpritzenLeft");
         koSpritzenLeft = GameObject.Find("Canvas/koSpritzenLeft");
         raketenLeft = GameObject.Find("Canvas/raketenLeft");
-        ladeanzeige = GameObject.Find("Canvas/ladeanzeige");
     }
 
     void Update() {
@@ -21,7 +20,5 @@ public class PlayerGui : MonoBehaviour {
         coronaSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().impfDosen.ToString());
         koSpritzenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().koBullets.ToString());
         raketenLeft.GetComponent<TextMeshProUGUI>().SetText(player.GetComponent<Shooting>().raketen.ToString());
-
-        ladeanzeige.GetComponent<RectTransform>().localScale = new Vector3((Time.time % 2) / 2, 1, 1);
     }
 }
