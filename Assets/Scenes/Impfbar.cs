@@ -85,13 +85,13 @@ public class Impfbar : LivingObject
     {
         Impfgegner=true;
         addSchlagstock();
-        Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "attila_hildmann" : "xavier_naidoo");
+        Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "attila_hildmann" : "xavier_naidoo", 1.0f);
     }
     public void werdePolitiker(int nr)
     {
          politiker=true;
         string[] politikerNamen = {"karl_lauterbach", "angela_merkel", "armin_laschet", "markus_soeder"};
-        Game.Instance.SetTexture(gameObject, politikerNamen[nr]);
+        Game.Instance.SetTexture(gameObject, politikerNamen[nr], 1.0f);
     }
     private void setColor()
     {
@@ -207,7 +207,7 @@ public class Impfbar : LivingObject
             Game.Instance.anzahlInfizierte++;
             if(!politiker&&!Impfgegner)
             {
-                Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "Corona_W" : "Corona_M");
+                Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "Corona_W" : "Corona_M", 0.8f);
             }
             setColor();
         }

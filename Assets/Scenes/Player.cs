@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
         shooting=GetComponent<Shooting>();
         movement=GetComponent<PlayerMovement>();
 
-        Game.Instance.SetTexture(gameObject, "player");    
+        Game.Instance.SetTexture(gameObject, "player", 1.0f);    
     }
 
     // Update is called once per frame
