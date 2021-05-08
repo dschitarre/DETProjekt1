@@ -68,7 +68,7 @@ public class Impfbar : LivingObject
             Destroy(gameObject);
             return;
         }
-        if(!politiker&&!Impfgegner)
+        if(!politiker&&!Impfgegner&&!infiziert)
         {
             if(weiblich)
             {
