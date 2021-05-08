@@ -24,11 +24,11 @@ public static class FightRules
         livingObject.leben-=10;
         if(livingObject.leben<=0)
         {
-            MonoBehaviour.Destroy(livingObject.gameObject);
             if(livingObject.TryGetComponent<Player>(out var player))
             {
                 Game.Instance.loose();
             }
+            MonoBehaviour.Destroy(livingObject.gameObject);
             return true;
         }
         return false;
