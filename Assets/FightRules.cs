@@ -21,7 +21,7 @@ public static class FightRules
     }
     public static bool takeDemage(int lifes, LivingObject livingObject)
     {
-        livingObject.leben-=10;
+        livingObject.leben-=lifes;
         if(livingObject.leben<=0)
         {
             if(livingObject.TryGetComponent<Player>(out var player))

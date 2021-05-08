@@ -205,6 +205,10 @@ public class Impfbar : LivingObject
         {
             infiziert=true;
             Game.Instance.anzahlInfizierte++;
+            if(!politiker&&!Impfgegner)
+            {
+                Game.Instance.SetTexture(gameObject, random.NextDouble() > 0.5 ? "Corona_W" : "Corona_M");
+            }
             setColor();
         }
         
