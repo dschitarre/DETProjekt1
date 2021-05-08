@@ -28,6 +28,10 @@ public static class FightRules
             {
                 Game.Instance.loose();
             }
+            else if(livingObject.TryGetComponent<Boss>(out var boss))
+            {
+                Game.Instance.win();
+            }
             MonoBehaviour.Destroy(livingObject.gameObject);
             return true;
         }

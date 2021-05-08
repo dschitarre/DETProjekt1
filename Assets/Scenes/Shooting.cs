@@ -10,8 +10,6 @@ public class Shooting : MonoBehaviour
     public int koBullets=5;
 
     public int raketen=0;
-    public int weapon2Number=1;
-
     private int nextShoot=0;
 
     void Start()
