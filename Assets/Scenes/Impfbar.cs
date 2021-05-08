@@ -42,7 +42,7 @@ public class Impfbar : LivingObject
         {
             random=new System.Random();
         }
-        weiblich=random.Next()==1;
+        weiblich=random.NextDouble()>0.5;
     }
     void Start()
     {
@@ -68,13 +68,16 @@ public class Impfbar : LivingObject
             Destroy(gameObject);
             return;
         }
-        if(weiblich)
+        if(!politiker&&!Impfgegner)
         {
-             Game.Instance.SetTexture(gameObject,"Geimpft_W", 0.8f);
-        }
-        else
-        {
-            Game.Instance.SetTexture(gameObject, "Geimpft_M", 0.8f);
+            if(weiblich)
+            {
+                Game.Instance.SetTexture(gameObject,"Ungeimpft_W", 0.8f);
+            }
+            else
+            {
+                Game.Instance.SetTexture(gameObject, "Ungeimpft_M", 0.8f);
+            }
         }
         setColor();
         StartCoroutine(FightRules.coHusten(this,random, rigidbody, Game.Instance.Settings.timeBetweenHusten, 0.5f));
