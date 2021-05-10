@@ -63,7 +63,7 @@ public class PlayerMovement : LivingObject
         } 
         if(BossAttack(other.gameObject))
         {
-            FightRules.takeDemage(leben,this);
+            FightRules.takeDemage(Game.Instance.Settings.bossDemage,this);
         }
     }
     /*

@@ -84,15 +84,19 @@ public class Impfbar : LivingObject
     }
     void OnDestroy()
     {
-        Game.Instance.anzahlNormalos--;
-        if(infiziert)
+        if(Game.Instance)
         {
-            Game.Instance.anzahlInfizierte--;
+            Game.Instance.anzahlNormalos--;
+            if(infiziert)
+            {
+                Game.Instance.anzahlInfizierte--;
+            }
+            if(geimpft)
+            {
+                Game.Instance.anzahlGeimpfte--;
+            }
         }
-        if(geimpft)
-        {
-            Game.Instance.anzahlGeimpfte--;
-        }
+        
     }
     public void werdeImpfgegner()
     {

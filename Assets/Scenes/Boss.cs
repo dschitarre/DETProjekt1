@@ -49,8 +49,7 @@ public class Boss : LivingObject
             }
             else if(bullet.typ==3)
             {
-
-                FightRules.takeDemage(10,this);
+                FightRules.takeDemage(20,this);
             }
         }
     } 

@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535837299abe37c45b9d69206c6e7f14, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  size: 15
+  size: 10
   cellSize: 5
   pathLengthRelativeToSize: 4
   wallThickness: 0.4
   personDensity: 0.18
   probInfected: 0.1
-  numberOfImpfgegnerPerAttack: 10
+  probImpfgegner: 0.05
   difficultLevel: 1
+  bossLives: 40
+  bossDemage: 20
+  impfDosenVonPolitikern: 20
+  koBulletsVonPolitikern: 20
+  raketenVonPolitiker: 20
+  timeBetweenHusten: 4

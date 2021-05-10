@@ -38,6 +38,8 @@ public class GameSettings : ScriptableObject
    
     public int bossLives;
 
+    public int bossDemage;
+
     public int impfDosenVonPolitikern;
 
     public int koBulletsVonPolitikern;
@@ -56,6 +58,7 @@ public class GameSettings : ScriptableObject
             probInfected=0.1f;
             probImpfgegner=0.05f;
             bossLives=40;
+            bossDemage=20;
             setBulletsVonPolitikern(20,20,20);  
             timeBetweenHusten=4f;
         }
@@ -64,6 +67,7 @@ public class GameSettings : ScriptableObject
             probInfected=0.2f;
             probImpfgegner=0.1f;
             bossLives=60;
+            bossDemage=30;
             setBulletsVonPolitikern(20,10,10);
             timeBetweenHusten=3f;
         }
@@ -72,6 +76,7 @@ public class GameSettings : ScriptableObject
             probInfected=0.3f;
             probImpfgegner=0.2f;
             bossLives=100;
+            bossDemage=50;
             setBulletsVonPolitikern(15,5,5);
             timeBetweenHusten=2f;
         }
@@ -80,6 +85,7 @@ public class GameSettings : ScriptableObject
             probInfected=0.5f;
             probImpfgegner=0.5f;
             bossLives=200;
+            bossDemage=100;
             setBulletsVonPolitikern(10,2,5);
             timeBetweenHusten=1f;
         }

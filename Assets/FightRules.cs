@@ -35,6 +35,10 @@ public static class FightRules
             MonoBehaviour.Destroy(livingObject.gameObject);
             return true;
         }
+        else
+        {
+            livingObject.StartCoroutine(FightRules.coDemage(livingObject.gameObject));
+        }
         return false;
     }  
     public static void shoot(int bulletTyp, Vector3 position, Vector3 force, float bulletForce, GameObject gameObject)
@@ -121,6 +125,13 @@ public static class FightRules
         vectorToPlayer.y=positionPlayer.y-position.y;
         vectorToPlayer=vectorToPlayer.normalized;
         return vectorToPlayer;
+    }
+    
+    static IEnumerator coDemage(GameObject gameObject)
+    {
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.red);
+        yield return new WaitForSeconds(0.5f);
+        gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.white);
     }
 
 }
